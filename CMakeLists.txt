@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.4)
 project(YAUKernel)
 
 # CFLAGS
-set(CMAKE_C_FLAGS "-Wall -m32 -O2 -nostdlib -nodefaultlibs")
+set(CMAKE_C_FLAGS "-Wall -Werror -m32 -O2 -nostdlib -nodefaultlibs")
 set(CMAKE_EXE_LINKER_FLAGS "-T ${PROJECT_SOURCE_DIR}/linker.ld")
 # nasm support
 set(CMAKE_ASM_NASM_OBJECT_FORMAT elf32)
@@ -19,7 +19,6 @@ add_subdirectory(src)
 
 add_custom_target(
 	iso
-	ALL
 	COMMAND mkdir -p ${CMAKE_BINARY_DIR}/isodir/boot/grub
 	COMMAND cp ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/kernel ${CMAKE_BINARY_DIR}/isodir/boot/
 	COMMAND cp ${PROJECT_SOURCE_DIR}/grub.cfg ${CMAKE_BINARY_DIR}/isodir/boot/grub
