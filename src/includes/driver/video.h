@@ -1,5 +1,5 @@
-#ifndef VIDEO_H
-#define VIDEO_H
+#ifndef DRIVER_VIDEO_H
+#define DRIVER_VIDEO_H
 
 #define SCREEN_ADDR 0xB8000
 #define LINE_SIZE 	80

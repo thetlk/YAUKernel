@@ -2,7 +2,6 @@
 
 void kmain()
 {
-	video_screen_clean();
-	video_print_color("coucou eliott", COLOR(PINK, WHITE));
-	while(1);
+    video_screen_clean();
+    while(1);
 }
