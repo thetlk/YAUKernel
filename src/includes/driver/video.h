@@ -19,10 +19,9 @@
 
 #define COLOR(fg, bg) bg << 4 | fg
 
-/*
-#define VIDEO_DISPLAY_OK() print("["); 						 \
-				   print_color("OK", COLOR(GREEN, BLACK)); \
-				   print("]\n"); */
+#define video_print_ok() video_print("["); 						 		\
+				   		 video_print_color("OK", COLOR(GREEN, BLACK));  \
+				   		 video_print("]\n");
 
 void video_screen_clean();
 void video_print(char *s);
