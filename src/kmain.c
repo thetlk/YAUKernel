@@ -5,6 +5,7 @@ void kmain()
 {
     video_screen_clean();
     video_print("YAUK !\n");
+
     gdt_init();
     while(1);
 }
