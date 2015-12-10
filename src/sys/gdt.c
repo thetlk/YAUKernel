@@ -35,22 +35,6 @@ static struct gdt_entry kernel_gdt[] = {
         .db          = OP_SIZE_32,
         .g           = LIMIT_IN_4K,
         .base_high_2 = BASE_HIGH_2(0)
-    },
-    /* segment 0x18 - stack segment: base = 0, limit = 0 */
-    {
-        .limit_low   = LIMIT_LOW(0),
-        .base_low    = BASE_LOW(0),
-        .base_high_1 = BASE_HIGH_1(0),
-        .type        = TYPE_DATA_SEG | TYPE_DATA_SEG_CONFORMING | TYPE_DATA_SEG_READABLE | TYPE_DATA_SEG_ACCESSED,
-        .s           = DESCRIPTOR_CODE_DATA,
-        .dpl         = DPL_RING_0,
-        .p           = IS_PRESENT_IN_MEMORY,
-        .limit_high  = LIMIT_HIGH(0),
-        .avl         = AVAILABLE,
-        .l           = LONG_MODE_OFF,
-        .db          = OP_SIZE_32,
-        .g           = LIMIT_IN_4K,
-        .base_high_2 = BASE_HIGH_2(0)
     }
 };
 
@@ -74,6 +58,7 @@ void gdt_init()
                   "movw %%ax, %%es    ;"
                   "movw %%ax, %%fs    ;"
                   "movw %%ax, %%gs    ;"
+                  "movw %%ax, %%ss    ;"
                   "ljmp $0x08, $next  ;"
                   "next:              ;"
                  :::);
