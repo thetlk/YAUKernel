@@ -27,3 +27,8 @@ run iso
 qemu-system-i386 -cdrom bin/YAUK.iso
 ```
 
+
+## Doc
+
+- http://www.intel.com/Assets/en_US/PDF/manual/253668.pdf
+- http://wiki.osdev.org/

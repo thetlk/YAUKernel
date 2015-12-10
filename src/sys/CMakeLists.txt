@@ -2,4 +2,4 @@ cmake_minimum_required(VERSION 3.4)
 
 file(GLOB sys_source *.c)
 
-add_library(sys ${sys_source})
+add_library(sys ${sys_source} interrupts.asm)
