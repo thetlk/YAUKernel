@@ -53,13 +53,13 @@ void gdt_init()
                   : "m" (kernel_gdt_register)
                   : "memory"
                  );
-    asm volatile ("movw $0x10, %%ax   ;"
+    asm volatile ("movw $0x10, %%ax   ;" // index=2, TI=0, RPL=0
                   "movw %%ax, %%ds    ;"
                   "movw %%ax, %%es    ;"
                   "movw %%ax, %%fs    ;"
                   "movw %%ax, %%gs    ;"
                   "movw %%ax, %%ss    ;"
-                  "ljmp $0x08, $next  ;"
+                  "ljmp $0x08, $next  ;" // index=1, TI=0, RPL=0
                   "next:              ;"
                  :::);
     video_print_ok();
