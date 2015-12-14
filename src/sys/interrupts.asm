@@ -1,8 +1,8 @@
 extern isr_default_int, isr_clock_int, isr_kbd_int
 
-global _asm_default_int, _asm_irq_0, _asm_irq_1
+global _asm_default_interrupt, _asm_irq_0, _asm_irq_1
 
-_asm_default_int:
+_asm_default_interrupt:
 	call isr_default_int
 	mov al,0x20
 	out 0x20,al

@@ -1,12 +1,9 @@
 #include <sys/idt.h>
+#include <sys/interrupts.h>
 #include <driver/video.h>
 
 struct idt_entry idt_list[IDT_NUM];
 struct idt_register idt_register;
-
-void _asm_default_int(void);
-void _asm_irq_0(void);
-void _asm_irq_1(void);
 
 void init_set(unsigned char n, unsigned short seg, unsigned int offset, unsigned char flags)
 {
@@ -23,7 +20,7 @@ void init_idt()
 
     for(i=0; i<IDT_NUM; i++)
     {
-        init_set(i, 0x08, (unsigned int) _asm_default_int, INT_GATE);
+        init_set(i, 0x08, (unsigned int) _asm_default_interrupt, INT_GATE);
     }
 
     // init_set(INT_NUM_CLOCK, 0x08, (unsigned int) _asm_irq_0, INT_GATE);
