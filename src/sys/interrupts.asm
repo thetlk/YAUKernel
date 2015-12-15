@@ -1,21 +1,21 @@
-extern isr_default_int, isr_clock_int, isr_kbd_int
+extern int_default, int_clock, int_keyboard
 
 global _asm_default_interrupt, _asm_irq_0, _asm_irq_1
 
 _asm_default_interrupt:
-    call isr_default_int
+    call int_default
     mov al,0x20
     out 0x20,al
     iret
 
 _asm_irq_0:
-    call isr_clock_int
+    call int_clock
     mov al,0x20
     out 0x20,al
     iret
 
 _asm_irq_1:
-    call isr_kbd_int
+    call int_keyboard
     mov al,0x20
     out 0x20,al
     iret

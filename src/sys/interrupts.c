@@ -1,12 +1,12 @@
 #include <sys/interrupts.h>
 #include <driver/video.h>
 
-void isr_default_int(void)
+void int_default(void)
 {
     video_print("default int\n");
 }
 
-void isr_clock_int(void)
+void int_clock(void)
 {
     static int tic = 0;
     static int sec = 0;
@@ -18,7 +18,7 @@ void isr_clock_int(void)
     }
 }
 
-void isr_kbd_int(void)
+void int_keyboard(void)
 {
     video_print("keyboard\n");
 }
