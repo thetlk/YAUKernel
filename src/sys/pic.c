@@ -1,8 +1,6 @@
 #include <sys/pic.h>
+#include <sys/asm.h>
 #include <driver/video.h>
-
-#define outb(port,value) \
-    asm volatile ("outb %%al, %%dx" :: "d" (port), "a" (value));
 
 void init_pic()
 {

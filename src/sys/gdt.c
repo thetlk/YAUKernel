@@ -1,4 +1,5 @@
 #include <sys/gdt.h>
+#include <sys/asm.h>
 #include <driver/video.h>
 
 static struct gdt_entry kernel_gdt[] = {
@@ -48,20 +49,7 @@ void gdt_init()
 
     // load gdt register
     video_print("Init GDT ... ");
-    asm volatile ("lgdt %0"
-                  :
-                  : "m" (kernel_gdt_register)
-                  : "memory"
-                 );
-    asm volatile ("movw $0x10, %%ax   ;" // index=2, TI=0, RPL=0
-                  "movw %%ax, %%ds    ;"
-                  "movw %%ax, %%es    ;"
-                  "movw %%ax, %%fs    ;"
-                  "movw %%ax, %%gs    ;"
-                  "movw %%ax, %%ss    ;"
-                  "ljmp $0x08, $next  ;" // index=1, TI=0, RPL=0
-                  "next:              ;"
-                 :::);
+    lgdt(kernel_gdt_register);
     video_print_ok();
 
 }

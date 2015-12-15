@@ -1,6 +1,7 @@
 #include <sys/gdt.h>
 #include <sys/idt.h>
 #include <sys/pic.h>
+#include <sys/asm.h>
 #include <driver/video.h>
 
 void kmain()
@@ -12,7 +13,7 @@ void kmain()
     init_idt();
     init_pic();
 
-    asm volatile ("sti");
+    sti(); // enable interrupts
 
     while(1);
 }

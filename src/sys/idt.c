@@ -1,5 +1,6 @@
 #include <sys/idt.h>
 #include <sys/interrupts.h>
+#include <sys/asm.h>
 #include <driver/video.h>
 
 struct idt_entry idt_list[IDT_NUM];
@@ -30,11 +31,7 @@ void init_idt()
     idt_register.base = (unsigned int) &idt_list[0];
 
     video_print("Init IDT ... ");
-    asm volatile ("lidtl %0"
-                  :
-                  : "m" (idt_register)
-                  : "memory"
-                 );
+    lidt(idt_register);
     video_print_ok();
 
 }
