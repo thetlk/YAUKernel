@@ -1,6 +1,7 @@
 #ifndef ASM_H
 #define ASM_H
 
+#define cli() asm volatile ("cli");
 #define sti() asm volatile ("sti");
 
 #define outb(port,value) 						\
