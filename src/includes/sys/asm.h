@@ -11,6 +11,11 @@
             :                         \
             );
 
+#define io_wait()                   \
+    asm volatile ("jmp 1f    ;"     \
+                  "1: jmp 2f ;"     \
+                  "2:");
+
 #define lgdt(table)                      \
     asm volatile ("lgdt %0"              \
                   :                      \
