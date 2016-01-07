@@ -1,7 +1,17 @@
 #include <driver/video.h>
+#include <sys/asm.h>
 
 unsigned int line = 0;
 unsigned int column = 0;
+
+void video_move_cursor()
+{
+    unsigned short c_pos = line * LINE_SIZE + column + 1;
+    outb(0x3D4, 0x0F);
+    outb(0x3D5, c_pos);
+    outb(0x3D4, 0x0E);
+    outb(0x3D5, c_pos >> 8);
+}
 
 void video_line_clean(unsigned int line)
 {
@@ -87,6 +97,8 @@ void video_putchar_color(char c, char color)
     {
         scroll(1);
     }
+
+    video_move_cursor();
 }
 
 void video_putchar(char c)
