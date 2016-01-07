@@ -1,4 +1,4 @@
-#include <sys/pic.h>
+#include <driver/pic.h>
 #include <sys/asm.h>
 #include <driver/video.h>
 

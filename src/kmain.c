@@ -1,7 +1,7 @@
 #include <sys/gdt.h>
 #include <sys/idt.h>
-#include <sys/pic.h>
 #include <sys/asm.h>
+#include <driver/pic.h>
 #include <driver/video.h>
 
 void kmain()
