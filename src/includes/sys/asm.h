@@ -11,6 +11,16 @@
             :                         \
             );
 
+# define inb(port)                          \
+({                                          \
+      unsigned char _ret;                   \
+      __asm__ (                             \
+                "inb %%dx, %%al"            \
+                : "=a" (_ret) : "d" (port)  \
+              );                            \
+      _ret;                                 \
+})
+
 #define io_wait()                   \
     asm volatile ("jmp 1f    ;"     \
                   "1: jmp 2f ;"     \

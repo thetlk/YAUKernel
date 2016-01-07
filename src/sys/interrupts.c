@@ -1,9 +1,11 @@
 #include <sys/interrupts.h>
+#include <sys/asm.h>
 #include <driver/video.h>
+#include <driver/keyboard.h>
 
 void int_default(void)
 {
-    video_print("default int\n");
+    // video_print("default int\n");
 }
 
 void int_clock(void)
@@ -20,5 +22,12 @@ void int_clock(void)
 
 void int_keyboard(void)
 {
-    video_print("keyboard\n");
+    unsigned char code;
+
+    do {
+        code = inb(0x64);
+    } while((code & 0x01) == 0);
+
+    code = inb(0x60);
+    keyboard_handle_code(code);
 }
