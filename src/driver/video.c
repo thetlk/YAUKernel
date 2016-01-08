@@ -81,6 +81,13 @@ void video_putchar_color(char c, char color)
     else if(c == '\r')
     {
         column = 0;
+    }
+    else if (c == '\b') // backspace
+    {
+        video -= 2;
+        video[0] = ' ';
+        video[1] = color;
+        column--;
     } else {
         video[0] = c;
         video[1] = color;
