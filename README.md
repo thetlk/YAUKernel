@@ -1,5 +1,5 @@
 
-# Yet Another Unfinished|Useless Kernel
+# Yet Another (Unfinished|Useless) Kernel
 
 Just to learn some stuff
 
@@ -32,3 +32,4 @@ qemu-system-i386 -cdrom bin/YAUK.iso
 
 - http://www.intel.com/Assets/en_US/PDF/manual/253668.pdf
 - http://wiki.osdev.org/
+- http://a.michelizza.free.fr/pmwiki.php?n=TutoOS.TutoOS
