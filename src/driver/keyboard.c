@@ -8,6 +8,7 @@ unsigned int ctrl_enable = 0;
 
 static unsigned char keyboard_map[] =
 {
+    0, 0, 0, 0,                   /* first key at 1 ... */
     0x1B, 0x1B,   0x1B,   0x1B,   /*  esc (0x01)  */
     '1',  '!',    '1',    '1',
     '2',  '@',    '2',    '2',
@@ -110,7 +111,6 @@ static unsigned char keyboard_map[] =
 void keyboard_handle_code(unsigned char code)
 {
 
-    code--;
     if(KEYBOARD_PRESSED_KEY(code))
     {
         switch(code)
