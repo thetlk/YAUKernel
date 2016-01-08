@@ -6,15 +6,19 @@ struct gdt_entry /* page 107 intel doc */
     unsigned short limit_low  : 16; /* segment limit 15:0                   */
     unsigned short base_low   : 16; /* base address 15:0                    */
     unsigned char base_high_1 : 8;  /* base address 23:16                   */
+    /* access */
     unsigned char type        : 4;  /* segment type                         */
     unsigned char s           : 1;  /* descriptor type                      */
     unsigned char dpl         : 2;  /* descriptor privilege level           */
     unsigned char p           : 1;  /* segment present                      */
+    /* end access */
     unsigned char limit_high  : 4;  /* segment limit 19:16                  */
+    /* others */
     unsigned char avl         : 1;  /* available for use by system software */
     unsigned char l           : 1;  /* 64bit code segment                   */
     unsigned char db          : 1;  /* default operation size               */
     unsigned char g           : 1;  /* granularity                          */
+    /* end others */
     unsigned char base_high_2 : 8;  /* base address 31:24                   */
 } __attribute__((packed));
 
