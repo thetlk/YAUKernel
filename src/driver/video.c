@@ -6,7 +6,7 @@ unsigned int column = 0;
 
 void video_move_cursor()
 {
-    unsigned short c_pos = line * LINE_SIZE + column + 1;
+    unsigned short c_pos = line * LINE_SIZE + column;
     outb(0x3D4, 0x0F);
     outb(0x3D5, c_pos);
     outb(0x3D4, 0x0E);
@@ -18,9 +18,10 @@ void video_line_clean(unsigned int line)
     char *video = SCREEN(line, 0);
     int i;
 
-    for(i=0; i<LINE_SIZE*2; i++)
+    for(i=0; i<LINE_SIZE*2; i += 2)
     {
-        video[i] = '\0';
+        video[i] = ' ';
+        video[i+1] = CURSOR_COLOR;
     }
 }
 
@@ -86,7 +87,7 @@ void video_putchar_color(char c, char color)
     {
         video -= 2;
         video[0] = ' ';
-        video[1] = color;
+        video[1] = CURSOR_COLOR;
         column--;
     } else {
         video[0] = c;

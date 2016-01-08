@@ -19,6 +19,8 @@
 
 #define COLOR(fg, bg) bg << 4 | fg
 
+#define CURSOR_COLOR COLOR(GREEN, BLACK)
+
 #define video_print_ok() video_print("["); 						 		\
 				   		 video_print_color("OK", COLOR(GREEN, BLACK));  \
 				   		 video_print("]\n");
