@@ -40,8 +40,9 @@ void gdt_init();
 #define TYPE_CODE_SEG_CONFORMING    (1<<2)
 #define TYPE_CODE_SEG_READABLE      (1<<1)
 #define TYPE_CODE_SEG_ACCESSED      (1<<0)
+
 #define TYPE_DATA_SEG               (0<<3)
-#define TYPE_DATA_SEG_CONFORMING    (1<<2)
+#define TYPE_DATA_SEG_GROWS_DOWN    (1<<2)
 #define TYPE_DATA_SEG_READABLE      (1<<1)
 #define TYPE_DATA_SEG_ACCESSED      (1<<0)
 
@@ -51,6 +52,7 @@ void gdt_init();
 #define DPL_RING_0 0
 #define DPL_RING_1 1
 #define DPL_RING_2 2
+#define DPL_RING_3 3
 
 #define IS_NOT_PRESENT_IN_MEMORY 0
 #define IS_PRESENT_IN_MEMORY     1
