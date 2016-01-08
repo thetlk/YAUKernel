@@ -33,3 +33,7 @@ qemu-system-i386 -cdrom bin/YAUK.iso
 - http://www.intel.com/Assets/en_US/PDF/manual/253668.pdf
 - http://wiki.osdev.org/
 - http://a.michelizza.free.fr/pmwiki.php?n=TutoOS.TutoOS
+
+## Todo
+- add printf equivalent
+- add memset/memcpy/memcmp functions
