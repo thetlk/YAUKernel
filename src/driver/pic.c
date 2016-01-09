@@ -2,7 +2,7 @@
 #include <sys/asm.h>
 #include <driver/video.h>
 
-void init_pic()
+void pic_init()
 {
     video_print("Init PIC ... ");
 

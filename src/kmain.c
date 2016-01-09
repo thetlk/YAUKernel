@@ -11,7 +11,7 @@ void kmain()
 
     gdt_init();
     idt_init();
-    init_pic();
+    pic_init();
 
     sti(); // enable interrupts
 
