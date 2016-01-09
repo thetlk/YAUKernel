@@ -6,7 +6,7 @@
 struct idt_entry idt_list[IDT_NUM];
 struct idt_register idt_register;
 
-void init_set(unsigned char n, unsigned short seg, unsigned int offset, unsigned char flags)
+void idt_set(unsigned char n, unsigned short seg, unsigned int offset, unsigned char flags)
 {
     idt_list[n].segment = seg;
     idt_list[n].offset_low = offset & 0xFFFF;
@@ -15,17 +15,17 @@ void init_set(unsigned char n, unsigned short seg, unsigned int offset, unsigned
     idt_list[n].flags = flags;
 }
 
-void init_idt()
+void idt_init()
 {
     int i;
 
     for(i=0; i<IDT_NUM; i++)
     {
-        init_set(i, 0x08, (unsigned int) _asm_default_interrupt, INT_GATE);
+        idt_set(i, 0x08, (unsigned int) _asm_default_interrupt, INT_GATE);
     }
 
-    // init_set(INT_NUM_CLOCK, 0x08, (unsigned int) _asm_irq_0, INT_GATE);
-    init_set(INT_NUM_KEYBOARD, 0x08, (unsigned int) _asm_irq_1, INT_GATE);
+    // idt_set(INT_NUM_CLOCK, 0x08, (unsigned int) _asm_irq_0, INT_GATE);
+    idt_set(INT_NUM_KEYBOARD, 0x08, (unsigned int) _asm_irq_1, INT_GATE);
 
     idt_register.limit = sizeof(struct idt_entry) * IDT_NUM;
     idt_register.base = (unsigned int) &idt_list[0];

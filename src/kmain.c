@@ -10,7 +10,7 @@ void kmain()
     video_print("YAUK !\n");
 
     gdt_init();
-    init_idt();
+    idt_init();
     init_pic();
 
     sti(); // enable interrupts

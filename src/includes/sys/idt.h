@@ -18,7 +18,7 @@ struct idt_register
     unsigned int base;
 } __attribute__((packed));
 
-void init_idt();
+void idt_init();
 
 #define IDT_NUM 0xFF
 
