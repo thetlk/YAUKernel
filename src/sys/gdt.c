@@ -126,8 +126,13 @@ void gdt_init()
 {
 
     // init kernel tss
-    kernel_tss.ss0 = 0x18;
+    kernel_tss.ss0 = 0x18; // stack kernel entry in gdt
     kernel_tss.esp = 0x20000;
+
+    // init kernel tss entry in gdt (base only)
+    kernel_gdt[7].base_low = BASE_LOW((unsigned int) &kernel_tss);
+    kernel_gdt[7].base_high_1 = BASE_HIGH_1((unsigned int) &kernel_tss);
+    kernel_gdt[7].base_high_2 = BASE_HIGH_2((unsigned int) &kernel_tss);
 
     // init gdt register
     kernel_gdt_register.limit = sizeof(kernel_gdt);
