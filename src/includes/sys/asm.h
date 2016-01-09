@@ -1,29 +1,49 @@
 #ifndef ASM_H
 #define ASM_H
 
+/*
+asm ( assembler template
+    : output operands                   (optional)
+    : input operands                    (optional)
+    : clobbered registers list          (optional)
+    );
+
+  output operands :
+    - a -> eax
+    - b -> ebx
+    - c -> ecx
+    - d -> edx
+    - S -> esi
+    - D -> edi
+    - signe = --> your assembly code does not care about the initial value of the mapped variable
+
+*/
+
 #define cli() asm volatile ("cli");
 #define sti() asm volatile ("sti");
 
-#define outb(port,value)              \
-    asm volatile ("outb %%al, %%dx"   \
+#define outb(port, value)             \
+    asm volatile ("outb %%dx, %%al"   \
             :                         \
             : "d" (port), "a" (value) \
             :                         \
             );
 
-# define inb(port)                          \
-({                                          \
-      unsigned char _ret;                   \
-      __asm__ (                             \
-                "inb %%dx, %%al"            \
-                : "=a" (_ret) : "d" (port)  \
-              );                            \
-      _ret;                                 \
+#define inb(port)                  \
+({                                 \
+    unsigned char _ret;            \
+    asm volatile ("inb %%al, %%dx" \
+            : "=a" (_ret)          \
+            : "d" (port)           \
+            :                      \
+        );                         \
+    _ret;                          \
 })
 
-#define io_wait()                   \
-    asm volatile ("jmp 1f    ;"     \
-                  "1: jmp 2f ;"     \
+
+#define io_wait()               \
+    asm volatile ("jmp 1f    ;" \
+                  "1: jmp 2f ;" \
                   "2:");
 
 #define lgdt(table)                      \
@@ -32,20 +52,23 @@
                   : "m" (table)          \
                   : "memory"             \
                  );                      \
-    asm volatile ("movw $0x10, %%ax   ;" \
-              "movw %%ax, %%ds    ;"     \
-              "movw %%ax, %%es    ;"     \
-              "movw %%ax, %%fs    ;"     \
-              "movw %%ax, %%gs    ;"     \
-              "ljmp $0x08, $next  ;"     \
+    asm volatile ("movw %%ax, 0x10   ;"  \
+              "movw %%ds, %%ax    ;"     \
+              "movw %%es, %%ax    ;"     \
+              "movw %%fs, %%ax    ;"     \
+              "movw %%gs, %%ax    ;"     \
+              "ljmp 0x08:next     ;"     \
               "next:              ;"     \
-             :::);
+             :                           \
+             :                           \
+             : "ax"                      \
+             );
 
 #define lidt(table)             \
-    asm volatile ("lidtl %0"    \
+    asm volatile ("lidt %0"     \
                   :             \
                   : "m" (table) \
-                  : "memory"    \
+                  :             \
                  );
 
 #endif
