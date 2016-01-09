@@ -30,5 +30,7 @@ void video_print(char *s);
 void video_print_color(char *s, char color);
 void video_putchar(char c);
 void video_putchar_color(char c, char color);
+void video_print_number(unsigned int number, unsigned int base);
+void video_print_number_color(unsigned int number, unsigned int base, char color);
 
 #endif

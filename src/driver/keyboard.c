@@ -123,7 +123,7 @@ void keyboard_handle_code(unsigned char code)
                 rshift_enable = 1;
                 break;
 
-            case 0x1C:
+            case 0x1d:
                 ctrl_enable = 1;
                 break;
 
@@ -147,7 +147,7 @@ void keyboard_handle_code(unsigned char code)
                 rshift_enable = 0;
                 break;
 
-            case 0x1C:
+            case 0x1d:
                 ctrl_enable = 0;
                 break;
 

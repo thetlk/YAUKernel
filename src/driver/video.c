@@ -109,6 +109,30 @@ void video_putchar_color(char c, char color)
     video_move_cursor();
 }
 
+void video_print_number_color(unsigned int number, unsigned int base, char color)
+{
+    char chars[] = "0123456789abcdef";
+
+    if(base > 16)
+    {
+        base = 16;
+    }
+
+    if(number < base)
+    {
+        video_putchar_color(chars[number], color);
+    } else {
+        video_print_number_color(number/base, base, color);
+        video_putchar_color(chars[number%base], color);
+    }
+
+}
+
+void video_print_number(unsigned int number, unsigned int base)
+{
+    video_print_number_color(number, base, COLOR(WHITE, BLACK));
+}
+
 void video_putchar(char c)
 {
     video_putchar_color(c, COLOR(WHITE, BLACK));

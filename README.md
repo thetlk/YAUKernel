@@ -35,5 +35,4 @@ qemu-system-i386 -cdrom bin/YAUK.iso
 - http://a.michelizza.free.fr/pmwiki.php?n=TutoOS.TutoOS
 
 ## Todo
-- add printf equivalent
 - add memset/memcpy/memcmp functions
