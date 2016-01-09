@@ -140,7 +140,7 @@ void gdt_init()
 
     // load gdt register
     video_print("Init GDT ... ");
-    lgdt(kernel_gdt_register);
+    lgdt(kernel_gdt_register, 0x10); // data at entry 0x10
     video_print_ok();
 
 }

@@ -46,22 +46,22 @@ asm ( assembler template
                   "1: jmp 2f ;" \
                   "2:");
 
-#define lgdt(table)                      \
-    asm volatile ("lgdt %0"              \
-                  :                      \
-                  : "m" (table)          \
-                  : "memory"             \
-                 );                      \
-    asm volatile ("movw %%ax, 0x10   ;"  \
-              "movw %%ds, %%ax    ;"     \
-              "movw %%es, %%ax    ;"     \
-              "movw %%fs, %%ax    ;"     \
-              "movw %%gs, %%ax    ;"     \
-              "ljmp 0x08:next     ;"     \
-              "next:              ;"     \
-             :                           \
-             :                           \
-             : "ax"                      \
+#define lgdt(table, segval)          \
+    asm volatile ("lgdt %0"          \
+                  :                  \
+                  : "m" (table)      \
+                  : "memory"         \
+                 );                  \
+    asm volatile (                   \
+              "movw %%ds, %%ax    ;" \
+              "movw %%es, %%ax    ;" \
+              "movw %%fs, %%ax    ;" \
+              "movw %%gs, %%ax    ;" \
+              "ljmp 0x08:next     ;" \
+              "next:              ;" \
+             :                       \
+             : "a" (segval)          \
+             :                       \
              );
 
 #define lidt(table)             \
@@ -70,5 +70,18 @@ asm ( assembler template
                   : "m" (table) \
                   :             \
                  );
+
+#define ltr(val)             \
+    asm volatile ("ltr %%ax" \
+            :                \
+            : "a" (val)      \
+            :                \
+        );
+
+#define set_ss_esp() \
+    asm volatile("mov %%eax, 0x18   ;" \
+                "movw %%ss, %%ax    ;" \
+                "mov %%esp, 0x20000 ;" \
+         ::: );
 
 #endif
