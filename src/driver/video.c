@@ -79,6 +79,10 @@ void video_putchar_color(char c, char color)
         line++;
         column = 0;
     }
+    else if(c == '\t') // tab
+    {
+        column = column + 8 - (column % 8);
+    }
     else if(c == '\r')
     {
         column = 0;
