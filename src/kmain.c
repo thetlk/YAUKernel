@@ -1,12 +1,14 @@
 #include <sys/gdt.h>
 #include <sys/idt.h>
 #include <sys/asm.h>
+#include <sys/syscall.h>
 #include <driver/pic.h>
 #include <driver/video.h>
 #include <libc/mem.h>
 
 void task1()
 {
+    asm volatile("mov %%eax, 0x42; int 0x30 ;" ::: );
     while(1);
 }
 

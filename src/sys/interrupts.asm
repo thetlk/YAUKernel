@@ -1,6 +1,6 @@
-extern int_default, int_clock, int_keyboard
+extern syscall_handle, int_default, int_clock, int_keyboard
 
-global _asm_default_interrupt, _asm_irq_0, _asm_irq_1
+global _asm_syscalls, _asm_default_interrupt, _asm_irq_0, _asm_irq_1
 
 %macro SAVE_REGS 0
     pushad
@@ -21,6 +21,14 @@ global _asm_default_interrupt, _asm_irq_0, _asm_irq_1
     pop ds
     popad
 %endmacro
+
+_asm_syscalls:
+    SAVE_REGS
+    push eax
+    call syscall_handle
+    pop eax
+    RESTORE_REGS
+    iret
 
 _asm_default_interrupt:
     SAVE_REGS

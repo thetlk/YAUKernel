@@ -36,8 +36,10 @@ void idt_init();
 #define INT_STORAGE_SEG (1<<4)
 
 #define INT_GATE INT_PRESENT | INT_DSP_R0 | INT_TYPE_32_INTERRUPT_GATE
+#define TRAP_GATE INT_PRESENT | INT_DSP_R3 | INT_TYPE_32_TRAP_GATE
 
 #define INT_NUM_CLOCK    (MASTER_IDT_OFFSET + 0) /* irq 0 from master */
 #define INT_NUM_KEYBOARD (MASTER_IDT_OFFSET + 1) /* irq 1 from master */
+#define INT_SYSCALL		 0x30
 
 #endif
