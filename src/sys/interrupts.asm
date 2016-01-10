@@ -22,6 +22,11 @@ global _asm_syscalls, _asm_default_interrupt, _asm_irq_0, _asm_irq_1
     popad
 %endmacro
 
+%macro END_OF_INTERRUPT 0
+    mov al, 0x20
+    out 0x20, al
+%endmacro
+
 _asm_syscalls:
     SAVE_REGS
     push eax
@@ -33,24 +38,21 @@ _asm_syscalls:
 _asm_default_interrupt:
     SAVE_REGS
     call int_default
-    mov al,0x20
-    out 0x20,al
+    END_OF_INTERRUPT
     RESTORE_REGS
     iret
 
 _asm_irq_0:
     SAVE_REGS
     call int_clock
-    mov al,0x20
-    out 0x20,al
+    END_OF_INTERRUPT
     RESTORE_REGS
     iret
 
 _asm_irq_1:
     SAVE_REGS
     call int_keyboard
-    mov al,0x20
-    out 0x20,al
+    END_OF_INTERRUPT
     RESTORE_REGS
     iret
 
