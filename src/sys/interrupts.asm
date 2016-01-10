@@ -23,16 +23,58 @@ global _asm_syscalls, _asm_default_interrupt, _asm_irq_0, _asm_irq_1
 %endmacro
 
 %macro END_OF_INTERRUPT 0
+    push eax
     mov al, 0x20
     out 0x20, al
+    pop eax
 %endmacro
 
 _asm_syscalls:
-    SAVE_REGS
+    ; we're not ussing pushad & co because
+    ; we need to preserve eax return value
+    ; save register values
+    push eax
+    push ecx
+    push edx
+    push ebx
+    push esp
+    push ebp
+    push esi
+    push edi
+    push ds
+    push es
+    push fs
+    push gs
+    ; set good ds value
+    push ebx
+    mov bx, 0x10
+    mov ds, bx
+    pop ebx
+    ; syscall arguments
+    push esi
+    push edi
+    push edx
+    push ecx
+    push ebx
     push eax
     call syscall_handle
-    pop eax
-    RESTORE_REGS
+    ; cleanup pushed args
+    add esp, 0x18
+    ; send END_OF_INTERRUPT
+    END_OF_INTERRUPT
+    ; restore registers, but not eax
+    pop gs
+    pop fs
+    pop es
+    pop ds
+    pop edi
+    pop esi
+    pop ebp
+    pop esp
+    pop ebx
+    pop edx
+    pop ecx
+    add esp, 0x4 ; instead of pop eax
     iret
 
 _asm_default_interrupt:

@@ -1,9 +1,13 @@
 #include <sys/syscall.h>
 #include <driver/video.h>
 
-void syscall_handle(int n)
+int syscall_handle(int syscall_number,
+                    int arg0,
+                    int arg1,
+                    int arg2,
+                    int arg3,
+                    int arg4)
 {
-	video_print("syscall number = 0x");
-	video_print_number(n, 16);
-	video_print(" ---\n");
+    SYSCALL_DEBUG(syscall_number, arg0, arg1, arg2, arg3, arg4);
+    return 0;
 }

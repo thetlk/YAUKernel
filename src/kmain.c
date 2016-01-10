@@ -8,7 +8,7 @@
 
 void task1()
 {
-    asm volatile("mov %%eax, 0x42; int 0x30 ;" ::: );
+    asm volatile("mov %%ebx, 0x1337babe ; mov %%eax, 0x42; int 0x30 ;" ::: );
     while(1);
 }
 
