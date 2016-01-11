@@ -26,7 +26,7 @@ void pagemem_init()
         page_addr += 4096;
     }
 
-    set_cr3(PAGE_DIRECTORY_ADDR);
-    cr0_enable_paging();
+    // set_cr3(PAGE_DIRECTORY_ADDR);
+    // cr0_enable_paging();
 
 }
