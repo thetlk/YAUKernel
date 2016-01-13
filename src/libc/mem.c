@@ -1,25 +1,26 @@
 #include <libc/mem.h>
 
-void *memcpy(unsigned char *dst, unsigned char *src, unsigned int l)
+void *memcpy(void *dest, const void *src, unsigned int n)
 {
-	unsigned char *ret = dst;
+	unsigned char *tmp_dest = dest;
+	const unsigned char *tmp_src = src;
 
-	while(l--)
+	while(n--)
 	{
-		*dst++ = *src++;
+		*tmp_dest++ = *tmp_src++;
 	}
 	
-	return ret;
+	return dest;
 }
 
-void *memset(unsigned char *dst, int c, unsigned int size)
+void *memset(void *s, int c, unsigned int n)
 {
-	unsigned char *ret = dst;
+	unsigned char *tmp = s;
 
-	while(size--)
+	while(n--)
 	{
-		*dst++ = c;
+		*tmp++ = c;
 	}
 
-	return ret;
+	return s;
 }
