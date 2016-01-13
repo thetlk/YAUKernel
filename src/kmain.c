@@ -8,23 +8,7 @@
 
 void task1()
 {
-    char *msg = (char*) 0x100;
-    msg[0] = 't';
-    msg[1] = 'a';
-    msg[2] = 's';
-    msg[3] = 'k';
-    msg[4] = '1';
-    msg[5] = '\n';
-
-    asm volatile("mov %%ecx, 6  ;"
-                 "mov %%ebx, %0 ;"
-                 "mov %%eax, 0x1;"
-                 "int 0x30      ;"
-            :
-            : "m" (msg)
-            :
-    );
-
+    asm volatile("mov %%ebx, 0x1337babe ; mov %%eax, 0x42; int 0x30 ;" ::: );
     while(1);
 }
 
@@ -36,7 +20,7 @@ void launch_task()
 
     asm volatile("cli;"
         "push 0x33 ;"
-        "push 0x1000 ;"
+        "push 0x30000 ;"
         "pushf ;"
         "pop %%eax ;"
         "or %%eax, 0x200 ;"
