@@ -87,19 +87,19 @@ static struct gdt_entry kernel_gdt[] = {
     },
     /* segment 0x30 - user stack segment: base = 0x0, limit = 0x0 */
     {
-        .limit_low   = LIMIT_LOW(0),
-        .base_low    = BASE_LOW(0),
-        .base_high_1 = BASE_HIGH_1(0),
+        .limit_low   = LIMIT_LOW(1),
+        .base_low    = BASE_LOW(0x30000),
+        .base_high_1 = BASE_HIGH_1(0x30000),
         .type        = TYPE_DATA_SEG | TYPE_DATA_SEG_READABLE | TYPE_DATA_SEG_ACCESSED | TYPE_DATA_SEG_GROWS_DOWN,
         .s           = DESCRIPTOR_CODE_DATA,
         .dpl         = DPL_RING_3,
         .p           = IS_PRESENT_IN_MEMORY,
-        .limit_high  = LIMIT_HIGH(0),
+        .limit_high  = LIMIT_HIGH(1),
         .avl         = AVAILABLE,
         .l           = LONG_MODE_OFF,
         .db          = OP_SIZE_32,
         .g           = LIMIT_IN_4K,
-        .base_high_2 = BASE_HIGH_2(0)
+        .base_high_2 = BASE_HIGH_2(0x30000)
     },
     /* TSS segment*/
     {

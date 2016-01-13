@@ -8,7 +8,23 @@
 
 void task1()
 {
-    asm volatile("mov %%ebx, 0x1337babe ; mov %%eax, 0x42; int 0x30 ;" ::: );
+    char *msg = (char*) 0x100; // ds:0x100
+    msg[0] = 't';
+    msg[1] = 'a';
+    msg[2] = 's';
+    msg[3] = 'k';
+    msg[4] = '1';
+    msg[5] = '\n';
+
+    asm volatile("mov %%ecx, 6      ;"
+                 "mov %%ebx, %0     ;"
+                 "mov %%eax, 0x01   ;"
+                 "int 0x30          ;"
+            :
+            : "m" (msg)
+            :
+        );
+
     while(1);
 }
 
@@ -19,17 +35,17 @@ void launch_task()
     memcpy((unsigned char *) 0x30000, (unsigned char *) &task1, 100);
 
     asm volatile("cli;"
-        "push 0x33 ;"
-        "push 0x30000 ;"
+        "push 0x33 ;"               // ss
+        "push 0x30000 ;"            // esp
         "pushf ;"
         "pop %%eax ;"
-        "or %%eax, 0x200 ;"
-        "and %%eax, 0xFFFFBFFF ;"
-        "push %%eax ;"
-        "push 0x23 ;"
-        "push 0x0 ;"
+        "or %%eax, 0x200 ;"         // set IF
+        "and %%eax, 0xFFFFBFFF ;"   // unset NT
+        "push %%eax ;"              // eflags
+        "push 0x23 ;"               // cs
+        "push 0x0 ;"                // eip
         "mov %%ax, 0x2B ;"
-        "mov %%ds, %%ax ;"
+        "mov %%ds, %%ax ;"          // user data segment
         "iret"
         :::
         );
