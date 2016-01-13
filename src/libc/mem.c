@@ -11,3 +11,15 @@ void *memcpy(unsigned char *dst, unsigned char *src, unsigned int l)
 	
 	return ret;
 }
+
+void *memset(unsigned char *dst, int c, unsigned int size)
+{
+	unsigned char *ret = dst;
+
+	while(size--)
+	{
+		*dst++ = c;
+	}
+
+	return ret;
+}
