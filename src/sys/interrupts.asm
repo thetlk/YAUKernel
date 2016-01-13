@@ -38,6 +38,7 @@ global _asm_irq_0, _asm_irq_1
     ; page fault
 _asm_pf:
     SAVE_REGS
+    call int_pagefault
     END_OF_INTERRUPT
     RESTORE_REGS
     iret
