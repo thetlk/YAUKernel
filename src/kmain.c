@@ -2,6 +2,7 @@
 #include <sys/idt.h>
 #include <sys/asm.h>
 #include <sys/syscall.h>
+#include <sys/pagemem.h>
 #include <driver/pic.h>
 #include <driver/video.h>
 #include <libc/mem.h>
@@ -63,11 +64,12 @@ void kmain()
     gdt_init();
     idt_init();
     pic_init();
+    pagemem_init();
 
     ltr(0x38); // TSS at 0x38 gdt entry
     set_ss_esp();
 
-    // sti(); // enable interrupts
+    sti(); // enable interrupts
 
     launch_task();
     // while(1);

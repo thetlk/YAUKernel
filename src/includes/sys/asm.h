@@ -78,10 +78,24 @@ asm ( assembler template
             :                \
         );
 
-#define set_ss_esp() \
+#define set_ss_esp()                   \
     asm volatile("mov %%eax, 0x18   ;" \
                 "movw %%ss, %%ax    ;" \
                 "mov %%esp, 0x20000 ;" \
          ::: );
+
+#define mov_cr3(val)                \
+    asm volatile("mov %%cr3, %%eax" \
+      :                             \
+      : "a" (val)                   \
+      :                             \
+    );
+
+#define cr0_enable_paging()            \
+    asm volatile("mov %%eax, %%cr0  ;" \
+        "or %%eax, 0x80000000       ;" \
+        "mov %%cr0, %%eax           ;" \
+        :::                            \
+    );
 
 #endif
