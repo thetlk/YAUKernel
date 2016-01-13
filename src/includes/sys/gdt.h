@@ -71,13 +71,17 @@ void gdt_init();
 
 struct tss
 {
-    unsigned int prev_tss;   // The previous TSS - if we used hardware task switching this would form a linked list.
-    unsigned int esp0;       // The stack pointer to load when we change to kernel mode.
-    unsigned int ss0;        // The stack segment to load when we change to kernel mode.
-    unsigned int esp1;       // everything below here is unusued now
-    unsigned int ss1;
+    unsigned short previous_task;
+    unsigned short __previous_task_unused;
+    unsigned int esp0;
+    unsigned short ss0;
+    unsigned short __ss0_unused;
+    unsigned int esp1;
+    unsigned short ss1;
+    unsigned short __ss1_unused;
     unsigned int esp2;
-    unsigned int ss2;
+    unsigned short ss2;
+    unsigned short __ss2_unused;
     unsigned int cr3;
     unsigned int eip;
     unsigned int eflags;
@@ -89,15 +93,23 @@ struct tss
     unsigned int ebp;
     unsigned int esi;
     unsigned int edi;
-    unsigned int es;
-    unsigned int cs;
-    unsigned int ss;
-    unsigned int ds;
-    unsigned int fs;
-    unsigned int gs;
-    unsigned int ldt;
-    unsigned short trap;
-    unsigned short iomap_base;
+    unsigned short es;
+    unsigned short __es_unused;
+    unsigned short cs;
+    unsigned short __cs_unused;
+    unsigned short ss;
+    unsigned short __ss_unused;
+    unsigned short ds;
+    unsigned short __ds_unused;
+    unsigned short fs;
+    unsigned short __fs_unused;
+    unsigned short gs;
+    unsigned short __gs_unused;
+    unsigned short ldt_selector;
+    unsigned short __ldt_sel_unused;
+    unsigned short debug_flag;
+    unsigned short io_map;
 } __attribute__((packed));
+
 
 #endif

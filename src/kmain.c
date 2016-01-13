@@ -56,21 +56,31 @@ void launch_task()
     while(1);
 }
 
+void continue_init()
+{
+    idt_init();
+    pic_init();
+
+    video_print("Load TSS ...");
+    ltr(0x38); // TSS at 0x38 gdt entry
+    video_print_ok();
+
+    pagemem_init();
+
+    sti(); // enable interrupts
+
+    // launch_task();
+    while(1);
+}
+
+
 void kmain()
 {
     video_screen_clean();
     video_print("YAUK !\n");
-
+    
     gdt_init();
-    idt_init();
-    pic_init();
-    pagemem_init();
-
-    ltr(0x38); // TSS at 0x38 gdt entry
     set_ss_esp();
 
-    sti(); // enable interrupts
-
-    launch_task();
-    // while(1);
+    continue_init();
 }

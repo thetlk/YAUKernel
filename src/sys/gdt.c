@@ -120,7 +120,7 @@ static struct gdt_entry kernel_gdt[] = {
 };
 
 static struct gdt_register kernel_gdt_register = {0, 0};
-static struct tss kernel_tss = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+static struct tss kernel_tss = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void gdt_init()
 {
