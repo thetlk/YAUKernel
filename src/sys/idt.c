@@ -24,8 +24,12 @@ void idt_init()
         idt_set(i, 0x08, (unsigned int) _asm_default_interrupt, INT_GATE);
     }
 
+    // exceptions
+    idt_set(INT_PF, 0x08, (unsigned int) _asm_pf, INT_GATE);
+    // irqs
     // idt_set(INT_NUM_CLOCK, 0x08, (unsigned int) _asm_irq_0, INT_GATE);
     idt_set(INT_NUM_KEYBOARD, 0x08, (unsigned int) _asm_irq_1, INT_GATE);
+    // others
     idt_set(INT_SYSCALL, 0x08, (unsigned int) _asm_syscalls, TRAP_GATE);
 
     idt_register.limit = sizeof(struct idt_entry) * IDT_NUM;

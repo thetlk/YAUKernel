@@ -3,6 +3,11 @@
 #include <driver/video.h>
 #include <driver/keyboard.h>
 
+void int_pagefault(void)
+{
+    video_print_color("\n---- page fault ----\n", COLOR(RED, WHITE));
+}
+
 void int_default(void)
 {
     // video_print("default int\n");

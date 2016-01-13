@@ -1,6 +1,12 @@
-extern syscall_handle, int_default, int_clock, int_keyboard
+extern syscall_handle
+extern int_default
+extern int_pagefault
+extern int_clock, int_keyboard
 
-global _asm_syscalls, _asm_default_interrupt, _asm_irq_0, _asm_irq_1
+global _asm_syscalls
+global _asm_default_interrupt
+global _asm_pf
+global _asm_irq_0, _asm_irq_1
 
 %macro SAVE_REGS 0
     pushad
@@ -28,6 +34,34 @@ global _asm_syscalls, _asm_default_interrupt, _asm_irq_0, _asm_irq_1
     out 0x20, al
     pop eax
 %endmacro
+
+    ; page fault
+_asm_pf:
+    SAVE_REGS
+    END_OF_INTERRUPT
+    RESTORE_REGS
+    iret
+
+_asm_default_interrupt:
+    SAVE_REGS
+    call int_default
+    END_OF_INTERRUPT
+    RESTORE_REGS
+    iret
+
+_asm_irq_0:
+    SAVE_REGS
+    call int_clock
+    END_OF_INTERRUPT
+    RESTORE_REGS
+    iret
+
+_asm_irq_1:
+    SAVE_REGS
+    call int_keyboard
+    END_OF_INTERRUPT
+    RESTORE_REGS
+    iret
 
 _asm_syscalls:
     ; we're not ussing pushad & co because
@@ -76,25 +110,3 @@ _asm_syscalls:
     pop ecx
     add esp, 0x4 ; instead of pop eax
     iret
-
-_asm_default_interrupt:
-    SAVE_REGS
-    call int_default
-    END_OF_INTERRUPT
-    RESTORE_REGS
-    iret
-
-_asm_irq_0:
-    SAVE_REGS
-    call int_clock
-    END_OF_INTERRUPT
-    RESTORE_REGS
-    iret
-
-_asm_irq_1:
-    SAVE_REGS
-    call int_keyboard
-    END_OF_INTERRUPT
-    RESTORE_REGS
-    iret
-

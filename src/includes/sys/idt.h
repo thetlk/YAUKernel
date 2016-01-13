@@ -38,8 +38,30 @@ void idt_init();
 #define INT_GATE INT_PRESENT | INT_DSP_R0 | INT_TYPE_32_INTERRUPT_GATE
 #define TRAP_GATE INT_PRESENT | INT_DSP_R3 | INT_TYPE_32_TRAP_GATE
 
+// exceptions - from intel doc p258
+#define INT_DE      0x00    /* divide error exception          */
+#define INT_DB      0x01    /* debug exception (trap or fault) */
+#define INT_NMI     0x02    /* nonmaskable interrupt           */
+#define INT_BP      0x03    /* breakpoint exception            */
+#define INT_OF      0x04    /* overflow excetpion              */
+#define INT_BR      0x05    /* bound range excedeed exception  */
+#define INT_UD      0x06    /* invalid opcode exception        */
+#define INT_NM      0x07    /* device not available exception  */
+#define INT_DF      0x08    /* double fault exception          */
+#define INT_COPROC  0x09    /* coprocessor segment overrun     */
+#define INT_TS      0x0A    /* invalid tss exception           */
+#define INT_NP      0x0B    /* segment no present              */
+#define INT_SS      0x0C    /* stack fault exception           */
+#define INT_GP      0x0D    /* general protection fault        */
+#define INT_PF      0x0E    /* page fault exception            */
+#define INT_MF      0x0F    /* x87 FPU floating point error    */
+#define INT_AC      0x10    /* alignment check exception       */
+#define INT_MC      0x11    /* machine check exception         */
+#define INT_XM      0x12    /* simd floating point exception   */
+// IRQs
 #define INT_NUM_CLOCK    (MASTER_IDT_OFFSET + 0) /* irq 0 from master */
 #define INT_NUM_KEYBOARD (MASTER_IDT_OFFSET + 1) /* irq 1 from master */
-#define INT_SYSCALL		 0x30
+// others
+#define INT_SYSCALL      0x30
 
 #endif
