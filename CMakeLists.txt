@@ -17,11 +17,11 @@ add_subdirectory(src)
 
 # in order to make the .iso file
 add_custom_target(
-	iso
-	COMMAND mkdir -p ${CMAKE_BINARY_DIR}/isodir/boot/grub
-	COMMAND cp ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/kernel ${CMAKE_BINARY_DIR}/isodir/boot/
-	COMMAND cp ${PROJECT_SOURCE_DIR}/grub.cfg ${CMAKE_BINARY_DIR}/isodir/boot/grub
-	COMMAND grub-mkrescue -d /usr/lib/grub/i386-pc/ -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/YAUK.iso ${CMAKE_BINARY_DIR}/isodir
-	DEPENDS kernel
+    iso
+    COMMAND mkdir -p ${CMAKE_BINARY_DIR}/isodir/boot/grub
+    COMMAND cp ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/kernel ${CMAKE_BINARY_DIR}/isodir/boot/
+    COMMAND cp ${PROJECT_SOURCE_DIR}/grub.cfg ${CMAKE_BINARY_DIR}/isodir/boot/grub
+    COMMAND grub-mkrescue -d /usr/lib/grub/i386-pc/ -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/YAUK.iso ${CMAKE_BINARY_DIR}/isodir
+    DEPENDS kernel
 )
 

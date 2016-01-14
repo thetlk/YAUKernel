@@ -2,25 +2,25 @@
 
 void *memcpy(void *dest, const void *src, unsigned int n)
 {
-	unsigned char *tmp_dest = dest;
-	const unsigned char *tmp_src = src;
+    unsigned char *tmp_dest = dest;
+    const unsigned char *tmp_src = src;
 
-	while(n--)
-	{
-		*tmp_dest++ = *tmp_src++;
-	}
-	
-	return dest;
+    while(n--)
+    {
+        *tmp_dest++ = *tmp_src++;
+    }
+
+    return dest;
 }
 
 void *memset(void *s, int c, unsigned int n)
 {
-	unsigned char *tmp = s;
+    unsigned char *tmp = s;
 
-	while(n--)
-	{
-		*tmp++ = c;
-	}
+    while(n--)
+    {
+        *tmp++ = c;
+    }
 
-	return s;
+    return s;
 }

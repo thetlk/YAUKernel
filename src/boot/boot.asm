@@ -13,19 +13,19 @@ extern kmain
 %define MULTIBOOT_HEADER_CHECKSUM -(MULTIBOOT_HEADER_MAGIC+MULTIBOOT_HEADER_FLAGS)
 
 section .multiboot
-	align 4
-	multiboot_header:
+    align 4
+    multiboot_header:
     dd MULTIBOOT_HEADER_MAGIC
     dd MULTIBOOT_HEADER_FLAGS
     dd MULTIBOOT_HEADER_CHECKSUM
 
 section .bootstrap_stack
-	stack_bottom:
-		times 16384 db 0
-	stack_top:
+    stack_bottom:
+        times 16384 db 0
+    stack_top:
 
 _start:
-	cli
-	mov esp, stack_top
-	push ebx
+    cli
+    mov esp, stack_top
+    push ebx
     call kmain
