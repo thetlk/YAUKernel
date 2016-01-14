@@ -9,7 +9,7 @@
 
 void task1()
 {
-    char *msg = (char*) 0x100; // ds:0x100
+    char *msg = (char*) 0x40000100;
     msg[0] = 't';
     msg[1] = 'a';
     msg[2] = 's';
@@ -31,25 +31,30 @@ void task1()
 
 void launch_task()
 {
+    unsigned int *pd;
     video_print("launch_task ...\n");
 
-    memcpy((unsigned char *) 0x30000, (unsigned char *) &task1, 100);
+    pd = pd_create_task1();
+    memcpy((unsigned char *) 0x100000, (unsigned char *) &task1, 100);
 
-    asm volatile("cli;"
+    mov_cr3(pd);
+    cr0_enable_paging();
+
+    asm volatile(
+        "cli;"
         "push 0x33 ;"               // ss
-        "push 0x30000 ;"            // esp
+        "push 0x40000F00 ;"            // esp
         "pushf ;"
         "pop %%eax ;"
         "or %%eax, 0x200 ;"         // set IF
         "and %%eax, 0xFFFFBFFF ;"   // unset NT
         "push %%eax ;"              // eflags
         "push 0x23 ;"               // cs
-        "push 0x0 ;"                // eip
+        "push 0x40000000 ;"                // eip
         "mov %%ax, 0x2B ;"
         "mov %%ds, %%ax ;"          // user data segment
         "iret"
-        :::
-        );
+        :::);
 
     video_print_color("critical error, halting system\n", COLOR(RED, WHITE));
     asm volatile ("hlt");
@@ -67,9 +72,9 @@ void continue_init()
 
     pagemem_init();
 
-    sti(); // enable interrupts
+    // sti(); // enable interrupts
 
-    // launch_task();
+    launch_task();
     while(1);
 }
 

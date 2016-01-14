@@ -2,11 +2,22 @@
 #define PAGEMEM_H
 
 void pagemem_init();
+unsigned int *pd_create_task1();
 
-#define PAGE_DIRECTORY_SIZE 1024
-#define PAGE_DIRECTORY_ADDR 0x20000
-#define PAGE_TABLE_SIZE 1024
-#define PAGE_TABLE_ADDR 0x21000
+#define PAGESIZE 4096
+#define RAM_MAXPAGE 0x10000
+#define VADDR_PD_OFFSET(addr)   ((addr) & 0xFFC00000) >> 22
+#define VADDR_PT_OFFSET(addr)   ((addr) & 0x003FF000) >> 12
+#define VADDR_PG_OFFSET(addr)   (addr) & 0x00000FFF
+#define PAGE(addr)              (addr) >> 12
+
+ #define USER_OFFSET 0x40000000
+
+#define set_page_frame_used(page) \
+    mem_bitmap[((unsigned int) page)/8] |= (1 << (((unsigned int) page)%8));
+
+ #define release_page_frame(p_addr) \
+    mem_bitmap[((unsigned int) p_addr/PAGESIZE)/8] &= ~(1 << (((unsigned int) p_addr/PAGESIZE)%8));
 
 struct page_directory_entry
 {

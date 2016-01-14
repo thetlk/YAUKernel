@@ -32,7 +32,7 @@ unsigned int sys_write(unsigned char *data, unsigned int size)
 
     // assume data is on userland data segment
     // we have to add DS offset on data
-    data += 0x30000; // beurk.
+    // data += 0x30000; // beurk.
 
     for(i=0; i<size; i++)
     {
