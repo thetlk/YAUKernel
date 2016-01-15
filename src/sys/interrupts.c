@@ -5,7 +5,20 @@
 
 void int_pagefault(void)
 {
+    unsigned int faulting_addr;
     video_print_color("\n---- page fault ----\n", COLOR(RED, WHITE));
+
+    asm volatile("mov %%eax, %%cr2  ;"
+                 "mov %0, %%eax     ;"
+            : "=m" (faulting_addr)
+            :
+            :
+        );
+
+    video_print_color("faulting_addr = 0x", COLOR(RED, WHITE));
+    video_print_number_color(faulting_addr, 16, COLOR(RED, WHITE));
+    video_putchar('\n');
+    asm("hlt");
 }
 
 void int_default(void)
