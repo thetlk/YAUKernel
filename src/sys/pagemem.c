@@ -61,14 +61,6 @@ void pagemem_init()
     pd0 = get_page_frame();
     pt0 = get_page_frame();
 
-    video_print("pd0 = ");
-    video_print_number((unsigned int) pd0, 16);
-    video_putchar('\n');
-
-    video_print("pt0 = ");
-    video_print_number((unsigned int) pt0, 16);
-    video_putchar('\n');
-
     pd0[0] = (unsigned int) pt0;
     pd0[0] |= 3; // present | writable
     for(i=1; i<1024; i++)
@@ -88,17 +80,10 @@ void pagemem_init()
 
 }
 
-unsigned int *pd_create_task1()
+void pd_create_task1()
 {
-    unsigned int *pd;
     unsigned int *pt;
     unsigned int i;
-
-    pd = get_page_frame();
-    for(i=0; i<1024; i++)
-    {
-        pd[i] = 0;
-    }
 
     pt = get_page_frame();
     for(i=0; i<1024; i++)
@@ -106,14 +91,9 @@ unsigned int *pd_create_task1()
         pt[i] = 0;
     }
 
-    pd[0] = pd0[0];
-    pd[0] |= 3;
-
-    pd[USER_OFFSET >> 22] = (unsigned int) pt;
-    pd[USER_OFFSET >> 22] |= 7;
+    pd0[USER_OFFSET >> 22] = (unsigned int) pt;
+    pd0[USER_OFFSET >> 22] |= 7;
 
     pt[0] = 0x100000;
     pt[0] |= 7;
-
-    return pd;
 }

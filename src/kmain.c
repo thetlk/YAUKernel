@@ -31,13 +31,12 @@ void task1()
 
 void launch_task()
 {
-    unsigned int *pd;
     video_print("launch_task ...\n");
 
-    pd = pd_create_task1();
+    pd_create_task1();
     memcpy((unsigned char *) 0x100000, (unsigned char *) &task1, 100);
 
-    mov_cr3(pd);
+    // mov_cr3(pd);
 
     asm volatile(
         "cli;"

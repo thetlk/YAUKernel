@@ -2,7 +2,7 @@
 #define PAGEMEM_H
 
 void pagemem_init();
-unsigned int *pd_create_task1();
+void pd_create_task1();
 
 #define PAGESIZE 4096
 #define RAM_MAXPAGE 0x10000
