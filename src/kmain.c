@@ -38,7 +38,6 @@ void launch_task()
     memcpy((unsigned char *) 0x100000, (unsigned char *) &task1, 100);
 
     mov_cr3(pd);
-    cr0_enable_paging();
 
     asm volatile(
         "cli;"

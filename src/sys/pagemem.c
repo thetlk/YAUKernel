@@ -10,8 +10,8 @@ unsigned char mem_bitmap[RAM_MAXPAGE / 8];
 // return PHYS addr
 void *get_page_frame()
 {
-    unsigned int byte;
-    unsigned int bit;
+    unsigned int byte = 0;
+    unsigned int bit = 0;
     unsigned int page = 0;
     void *physaddr = 0;
 
@@ -24,19 +24,15 @@ void *get_page_frame()
                 if((mem_bitmap[byte] & (1<<bit)) == 0)
                 {
                     page = 8 * byte + bit;
-                    set_page_frame_used(page);
                     physaddr = (void*) (page * PAGESIZE);
-                    break;
+                    set_page_frame_used(page);
+                    return physaddr;
                 }
             }
         }
     }
 
-    video_print("return page = 0x");
-    video_print_number((unsigned int) page, 16);
-    video_putchar('\n');
-
-    return physaddr;
+    return 0;
 }
 
 void pagemem_init()
@@ -87,8 +83,8 @@ void pagemem_init()
         pt0[i] |= 3; // Present | Writeable
     }
 
-    // mov_cr3(pd0);
-    // cr0_enable_paging();
+    mov_cr3(pd0);
+    cr0_enable_paging();
 
 }
 
