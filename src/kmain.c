@@ -36,8 +36,6 @@ void launch_task()
     pd_create_task1();
     memcpy((unsigned char *) 0x100000, (unsigned char *) &task1, 100);
 
-    // mov_cr3(pd);
-
     asm volatile(
         "cli;"
         "push 0x33 ;"               // ss
@@ -64,7 +62,7 @@ void continue_init()
     idt_init();
     pic_init();
 
-    video_print("Load TSS ...");
+    video_print("Load TSS ... ");
     ltr(0x38); // TSS at 0x38 gdt entry
     video_print_ok();
 
