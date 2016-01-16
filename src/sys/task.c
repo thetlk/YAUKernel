@@ -11,7 +11,7 @@ void task_load(void *physaddr, void *function, unsigned int size)
 
     // copy code at physical address
     memcpy(physaddr, function, size);
-    
+
     page_directory = page_directory_create(physaddr, size);
 
     t.regs.ss = 0x33;

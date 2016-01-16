@@ -10,20 +10,13 @@
 
 void task1()
 {
-    // asm volatile("mov %%eax, 0x1337babe;" :::);
-    // while(1);
-    int i;
+    // int i;
     char *msg = (char*) 0x40000100;
-    msg[0] = 't';
-    msg[1] = 'a';
-    msg[2] = 's';
-    msg[3] = 'k';
-    msg[4] = '1';
-    msg[5] = '\n';
+    msg[0] = '1';
 
     while(1)
     {
-        asm volatile("mov %%ecx, 6      ;"
+        asm volatile("mov %%ecx, 1      ;"
                  "mov %%ebx, %0     ;"
                  "mov %%eax, 0x01   ;"
                  "int 0x30          ;"
@@ -31,24 +24,19 @@ void task1()
             : "m" (msg)
             :
         );
-        for(i=0; i<1000000; i++);
+        // for(i=0; i<1000000; i++);
     }
 }
 
 void task2()
 {
-    int i;
+    // int i;
     char *msg = (char*) 0x40000100;
-    msg[0] = 't';
-    msg[1] = 'a';
-    msg[2] = 's';
-    msg[3] = 'k';
-    msg[4] = '2';
-    msg[5] = '\n';
+    msg[0] = '2';
 
     while(1)
     {
-        asm volatile("mov %%ecx, 6      ;"
+        asm volatile("mov %%ecx, 1      ;"
                  "mov %%ebx, %0     ;"
                  "mov %%eax, 0x01   ;"
                  "int 0x30          ;"
@@ -56,7 +44,7 @@ void task2()
             : "m" (msg)
             :
         );
-        for(i=0; i<1000000; i++);
+        // for(i=0; i<10000000; i++);
     }
 }
 
@@ -73,9 +61,10 @@ void kmain_continue()
 
     task_load((void*) 0x100000, &task1, 0x1001);
     task_load((void*) 0x200000, &task2, 0x1001);
+
+    video_print_color("Enable interrupts !\n", COLOR(WHITE, GREEN));
     sti(); // enable interrupts
 
-    // launch_task();
     while(1);
 }
 

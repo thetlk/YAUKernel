@@ -15,11 +15,6 @@ void scheduler_add_task(struct task t)
 
 void schedule(struct pushed_registers *regs)
 {
-    // video_print("regs = 0x");
-    // video_print_number((unsigned int) regs, 16);
-    // video_print("eax = 0x");
-    // video_print_number(regs->eax, 16);
-    // video_print("\n");
 
     if(n_task == 0)
     {
@@ -45,7 +40,6 @@ void schedule(struct pushed_registers *regs)
         current_task->regs.edx = regs->edx;
         current_task->regs.ecx = regs->ecx;
         current_task->regs.eax = regs->eax;
-        // because of iret
         current_task->regs.eip = regs->eip;
         current_task->regs.cs = regs->cs;
         current_task->regs.eflags = regs->eflags;
