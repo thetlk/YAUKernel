@@ -8,7 +8,7 @@ void _asm_irq_1(void);
 void _asm_syscalls(void);
 
 void int_default(void);
-void int_clock(void);
+void int_clock(void *regs);
 void int_keyboard(void);
 
 #endif

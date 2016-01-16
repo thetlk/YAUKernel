@@ -7,6 +7,11 @@ unsigned int *pd0; /* kernel page directory */
 unsigned int *pt0; /* kernel page table */
 unsigned char mem_bitmap[RAM_MAXPAGE / 8];
 
+void set_page_frame_used(unsigned int page)
+{
+    mem_bitmap[page/8] |= (1 << (page%8));
+}
+
 // return PHYS addr
 void *get_page_frame()
 {
@@ -80,20 +85,49 @@ void pagemem_init()
 
 }
 
-void pd_create_task1()
+void *page_directory_create(void *physaddr, unsigned int size)
 {
-    unsigned int *pt;
+    unsigned int page_base = PAGE((unsigned int) physaddr);
+    unsigned int pages;
     unsigned int i;
+    unsigned int j;
+    unsigned int *page_directory;
+    unsigned int *page_table;
 
-    pt = get_page_frame();
-    for(i=0; i<1024; i++)
+    if(size % PAGESIZE != 0)
     {
-        pt[i] = 0;
+        pages = size / PAGESIZE + 1;
+    } else {
+        pages = size / PAGESIZE;
     }
 
-    pd0[USER_OFFSET >> 22] = (unsigned int) pt;
-    pd0[USER_OFFSET >> 22] |= 7;
+    for(i=0; i<pages; i++)
+    {
+        set_page_frame_used(page_base + i);
+    }
 
-    pt[0] = 0x100000;
-    pt[0] |= 7;
+    // setup kernel
+    page_directory = (unsigned int *) get_page_frame();
+    page_directory[0] = pd0[0];
+    page_directory[0] |= 3;
+    for(i=1; i<1024; i++)
+    {
+        page_directory[i] = 0;
+    }
+
+    // userspace
+    for(i=0; pages; i++)
+    {
+        page_table = (unsigned int *) get_page_frame();
+        page_directory[(USER_OFFSET + i * PAGESIZE * 1024) >> 22] = (unsigned int) page_table;
+        page_directory[(USER_OFFSET + i * PAGESIZE * 1024) >> 22] |= 7;
+
+        for(j=0; j<1024 && pages; j++, pages--)
+        {
+            page_table[j] = ((unsigned int) physaddr + i * PAGESIZE * 1024 + j * PAGESIZE);
+            page_table[j] |= 7;
+        }
+    }
+
+    return page_directory;
 }

@@ -1,8 +1,10 @@
 #ifndef PAGEMEM_H
 #define PAGEMEM_H
 
+void set_page_frame_used(unsigned int page);
 void pagemem_init();
 void pd_create_task1();
+void *page_directory_create(void *physaddr, unsigned int size);
 
 #define PAGESIZE 4096
 #define RAM_MAXPAGE 0x10000
@@ -11,13 +13,10 @@ void pd_create_task1();
 #define VADDR_PG_OFFSET(addr)   (addr) & 0x00000FFF
 #define PAGE(addr)              (addr) >> 12
 
- #define USER_OFFSET 0x40000000
+#define USER_OFFSET 0x40000000
 
-#define set_page_frame_used(page) \
-    mem_bitmap[((unsigned int) page)/8] |= (1 << (((unsigned int) page)%8));
-
- #define release_page_frame(p_addr) \
-    mem_bitmap[((unsigned int) p_addr/PAGESIZE)/8] &= ~(1 << (((unsigned int) p_addr/PAGESIZE)%8));
+#define release_page_frame(p_addr) \
+   mem_bitmap[((unsigned int) p_addr/PAGESIZE)/8] &= ~(1 << (((unsigned int) p_addr/PAGESIZE)%8));
 
 struct page_directory_entry
 {

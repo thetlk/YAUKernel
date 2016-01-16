@@ -9,7 +9,6 @@ unsigned int syscall_handle(unsigned int syscall_number,
                     unsigned int arg4)
 {
     unsigned int ret = 0;
-    SYSCALL_DEBUG(syscall_number, arg0, arg1, arg2, arg3, arg4);
 
     switch(syscall_number)
     {
@@ -18,6 +17,7 @@ unsigned int syscall_handle(unsigned int syscall_number,
             break;
 
         default:
+            SYSCALL_DEBUG(syscall_number, arg0, arg1, arg2, arg3, arg4);
             video_print_color("unhandled syscall number\n", COLOR(RED, WHITE));
             ret = -1;
             break;

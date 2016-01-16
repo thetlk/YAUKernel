@@ -3,12 +3,16 @@
 #include <sys/asm.h>
 #include <sys/syscall.h>
 #include <sys/pagemem.h>
+#include <sys/task.h>
 #include <driver/pic.h>
 #include <driver/video.h>
 #include <libc/mem.h>
 
 void task1()
 {
+    // asm volatile("mov %%eax, 0x1337babe;" :::);
+    // while(1);
+    int i;
     char *msg = (char*) 0x40000100;
     msg[0] = 't';
     msg[1] = 'a';
@@ -17,7 +21,9 @@ void task1()
     msg[4] = '1';
     msg[5] = '\n';
 
-    asm volatile("mov %%ecx, 6      ;"
+    while(1)
+    {
+        asm volatile("mov %%ecx, 6      ;"
                  "mov %%ebx, %0     ;"
                  "mov %%eax, 0x01   ;"
                  "int 0x30          ;"
@@ -25,39 +31,36 @@ void task1()
             : "m" (msg)
             :
         );
-
-    while(1);
+        for(i=0; i<1000000; i++);
+    }
 }
 
-void launch_task()
+void task2()
 {
-    video_print("launch_task ...\n");
+    int i;
+    char *msg = (char*) 0x40000100;
+    msg[0] = 't';
+    msg[1] = 'a';
+    msg[2] = 's';
+    msg[3] = 'k';
+    msg[4] = '2';
+    msg[5] = '\n';
 
-    pd_create_task1();
-    memcpy((unsigned char *) 0x100000, (unsigned char *) &task1, 100);
-
-    asm volatile(
-        "cli;"
-        "push 0x33 ;"               // ss
-        "push 0x40000F00 ;"            // esp
-        "pushf ;"
-        "pop %%eax ;"
-        "or %%eax, 0x200 ;"         // set IF
-        "and %%eax, 0xFFFFBFFF ;"   // unset NT
-        "push %%eax ;"              // eflags
-        "push 0x23 ;"               // cs
-        "push 0x40000000 ;"                // eip
-        "mov %%ax, 0x2B ;"
-        "mov %%ds, %%ax ;"          // user data segment
-        "iret"
-        :::);
-
-    video_print_color("critical error, halting system\n", COLOR(RED, WHITE));
-    asm volatile ("hlt");
-    while(1);
+    while(1)
+    {
+        asm volatile("mov %%ecx, 6      ;"
+                 "mov %%ebx, %0     ;"
+                 "mov %%eax, 0x01   ;"
+                 "int 0x30          ;"
+            :
+            : "m" (msg)
+            :
+        );
+        for(i=0; i<1000000; i++);
+    }
 }
 
-void continue_init()
+void kmain_continue()
 {
     idt_init();
     pic_init();
@@ -68,9 +71,11 @@ void continue_init()
 
     pagemem_init();
 
-    // sti(); // enable interrupts
+    task_load((void*) 0x100000, &task1, 0x1001);
+    task_load((void*) 0x200000, &task2, 0x1001);
+    sti(); // enable interrupts
 
-    launch_task();
+    // launch_task();
     while(1);
 }
 
@@ -83,5 +88,5 @@ void kmain()
     gdt_init();
     set_ss_esp();
 
-    continue_init();
+    kmain_continue();
 }

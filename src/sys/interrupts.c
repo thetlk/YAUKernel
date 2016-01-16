@@ -1,5 +1,6 @@
 #include <sys/interrupts.h>
 #include <sys/asm.h>
+#include <sys/scheduler.h>
 #include <driver/video.h>
 #include <driver/keyboard.h>
 
@@ -26,16 +27,17 @@ void int_default(void)
     // video_print("default int\n");
 }
 
-void int_clock(void)
+void int_clock(void *regs)
 {
-    static int tic = 0;
-    static int sec = 0;
-    tic++;
-    if (tic % 100 == 0) {
-        sec++;
-        tic = 0;
-        video_print("clock\n");
-    }
+    // static int tic = 0;
+    // static int sec = 0;
+    // tic++;
+    // if (tic % 100 == 0) {
+    //     sec++;
+    //     tic = 0;
+    //     video_print("clock\n");
+    // }
+    schedule(regs);
 }
 
 void int_keyboard(void)

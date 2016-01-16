@@ -52,7 +52,9 @@ _asm_default_interrupt:
 
 _asm_irq_0:
     SAVE_REGS
+    push esp
     call int_clock
+    add esp, 4
     END_OF_INTERRUPT
     RESTORE_REGS
     iret
