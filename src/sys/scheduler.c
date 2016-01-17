@@ -1,5 +1,6 @@
 #include <sys/scheduler.h>
 #include <sys/task.h>
+#include <sys/tss.h>
 #include <driver/video.h>
 
 struct task task_list[32];

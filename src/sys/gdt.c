@@ -1,4 +1,5 @@
 #include <sys/gdt.h>
+#include <sys/tss.h>
 #include <sys/asm.h>
 #include <driver/video.h>
 
@@ -120,19 +121,17 @@ static struct gdt_entry kernel_gdt[] = {
 };
 
 static struct gdt_register kernel_gdt_register = {0, 0};
-static struct tss kernel_tss = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 void gdt_init()
 {
 
     // init kernel tss
-    kernel_tss.ss0 = 0x18; // stack kernel entry in gdt
-    kernel_tss.esp0 = 0x20000;
+    tss_update(0x18, 0x20000);
 
     // init kernel tss entry in gdt (base only)
-    kernel_gdt[7].base_low = BASE_LOW((unsigned int) &kernel_tss);
-    kernel_gdt[7].base_high_1 = BASE_HIGH_1((unsigned int) &kernel_tss);
-    kernel_gdt[7].base_high_2 = BASE_HIGH_2((unsigned int) &kernel_tss);
+    kernel_gdt[7].base_low = BASE_LOW((unsigned int) tss_get_address());
+    kernel_gdt[7].base_high_1 = BASE_HIGH_1((unsigned int) tss_get_address());
+    kernel_gdt[7].base_high_2 = BASE_HIGH_2((unsigned int) tss_get_address());
 
     // init gdt register
     kernel_gdt_register.limit = sizeof(kernel_gdt);
