@@ -28,6 +28,12 @@ struct task
         unsigned int cr3;
     } regs __attribute__((packed));
 
+    struct
+    {
+        unsigned int esp0;
+        unsigned short ss0;
+    } kstack __attribute__((packed));
+
 } __attribute__((packed));
 
 #endif

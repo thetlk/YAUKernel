@@ -1,10 +1,9 @@
 #ifndef PAGEMEM_H
 #define PAGEMEM_H
 
-void set_page_frame_used(unsigned int page);
 void pagemem_init();
-void pd_create_task1();
-void *page_directory_create(void *physaddr, unsigned int size);
+void *pagemem_get_page_frame();
+void *pagemem_pagedirectory_create(void *physaddr, unsigned int size);
 
 #define PAGESIZE 4096
 #define RAM_MAXPAGE 0x10000

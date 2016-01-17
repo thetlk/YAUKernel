@@ -7,13 +7,17 @@
 void task_load(void *physaddr, void *function, unsigned int size)
 {
     void *page_directory;
+    void *kernel_stack;
     struct task t;
 
     // copy code at physical address
     memcpy(physaddr, function, size);
 
-    page_directory = page_directory_create(physaddr, size);
+    page_directory = pagemem_pagedirectory_create(physaddr, size);
+    kernel_stack = pagemem_get_page_frame();
 
+    t.kstack.ss0 = 0x18;
+    t.kstack.esp0 = (unsigned int) kernel_stack + PAGESIZE;
     t.regs.ss = 0x33;
     t.regs.esp = 0x40001000;
     t.regs.cs = 0x23;

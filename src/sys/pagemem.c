@@ -13,7 +13,7 @@ void set_page_frame_used(unsigned int page)
 }
 
 // return PHYS addr
-void *get_page_frame()
+void *pagemem_get_page_frame()
 {
     unsigned int byte = 0;
     unsigned int bit = 0;
@@ -63,8 +63,8 @@ void pagemem_init()
         set_page_frame_used(i);
     }
 
-    pd0 = get_page_frame();
-    pt0 = get_page_frame();
+    pd0 = pagemem_get_page_frame();
+    pt0 = pagemem_get_page_frame();
 
     pd0[0] = (unsigned int) pt0;
     pd0[0] |= 3; // present | writable
@@ -85,7 +85,7 @@ void pagemem_init()
 
 }
 
-void *page_directory_create(void *physaddr, unsigned int size)
+void *pagemem_pagedirectory_create(void *physaddr, unsigned int size)
 {
     unsigned int page_base = PAGE((unsigned int) physaddr);
     unsigned int pages;
@@ -107,7 +107,7 @@ void *page_directory_create(void *physaddr, unsigned int size)
     }
 
     // setup kernel
-    page_directory = (unsigned int *) get_page_frame();
+    page_directory = (unsigned int *) pagemem_get_page_frame();
     page_directory[0] = pd0[0];
     page_directory[0] |= 3;
     for(i=1; i<1024; i++)
@@ -118,7 +118,7 @@ void *page_directory_create(void *physaddr, unsigned int size)
     // userspace
     for(i=0; pages; i++)
     {
-        page_table = (unsigned int *) get_page_frame();
+        page_table = (unsigned int *) pagemem_get_page_frame();
         page_directory[(USER_OFFSET + i * PAGESIZE * 1024) >> 22] = (unsigned int) page_table;
         page_directory[(USER_OFFSET + i * PAGESIZE * 1024) >> 22] |= 7;
 
