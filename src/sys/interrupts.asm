@@ -1,11 +1,11 @@
 extern syscall_handle
 extern int_default
-extern int_pagefault
+extern int_pagefault, int_generalprotection
 extern int_clock, int_keyboard
 
 global _asm_syscalls
 global _asm_default_interrupt
-global _asm_pf
+global _asm_pf, _asm_gp
 global _asm_irq_0, _asm_irq_1
 
 %macro SAVE_REGS 0
@@ -35,6 +35,14 @@ global _asm_irq_0, _asm_irq_1
     pop eax
 %endmacro
 
+    ; general protection
+_asm_gp:
+    SAVE_REGS
+    call int_generalprotection
+    END_OF_INTERRUPT
+    RESTORE_REGS
+    iret
+
     ; page fault
 _asm_pf:
     SAVE_REGS
@@ -44,6 +52,7 @@ _asm_pf:
     iret
 
 _asm_default_interrupt:
+    xchg bx, bx
     SAVE_REGS
     call int_default
     END_OF_INTERRUPT

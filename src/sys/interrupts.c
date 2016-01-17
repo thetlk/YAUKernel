@@ -4,6 +4,12 @@
 #include <driver/video.h>
 #include <driver/keyboard.h>
 
+void int_generalprotection()
+{
+    video_print_color("\n----- general protection fault -----\n", COLOR(RED, WHITE));
+    asm("hlt");
+}
+
 void int_pagefault(void)
 {
     unsigned int faulting_addr;

@@ -25,6 +25,7 @@ void idt_init()
     }
 
     // exceptions
+    idt_set(INT_GP, 0x08, (unsigned int) _asm_gp, INT_GATE);
     idt_set(INT_PF, 0x08, (unsigned int) _asm_pf, INT_GATE);
     // irqs
     idt_set(INT_NUM_CLOCK, 0x08, (unsigned int) _asm_irq_0, INT_GATE);
