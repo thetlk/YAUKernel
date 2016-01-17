@@ -28,12 +28,10 @@ void scheduler_switch_to_task(struct task *t)
     if(t->regs.cs == 0x08)
     {
         // inside kernel restore last stack
-        video_print("restore kernel task\n");
         kesp = t->regs.esp;
         kss = t->regs.ss;
     } else {
         // inside user task - take clean kernel stack
-        video_print("restore user task\n");
         kesp = t->kstack.esp0;
         kss = t->kstack.ss0;
     }
@@ -41,8 +39,11 @@ void scheduler_switch_to_task(struct task *t)
     asm volatile(
         "mov %%ss, %[kss]   ;"
         "mov %%esp, %[kesp] ;"
-        "push %[ss]         ;"
-        "push %[esp]        ;"
+        "cmp %[mode], 0x08  ;"
+        "je kernel_mode     ;"
+        "push %[ss]         ;"  // user mode needs cs and esp
+        "push %[esp]        ;"  // while kernel mode doesn't
+        "kernel_mode:       ;"
         "push %[eflags]     ;"
         "push %[cs]         ;"
         "push %[eip]        ;"
@@ -76,6 +77,7 @@ void scheduler_switch_to_task(struct task *t)
         :
         : [kss]     "m" (kss),
           [kesp]    "m" (kesp),
+          [mode]    "m" (t->regs.cs),
           [ss]      "m" (t->regs.ss),
           [esp]     "m" (t->regs.esp),
           [eflags]  "m" (t->regs.eflags),

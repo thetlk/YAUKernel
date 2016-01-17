@@ -12,11 +12,16 @@ void task1()
 {
     int i;
     char *msg = (char*) 0x40000100;
-    msg[0] = '1';
+    msg[0] = 't';
+    msg[1] = 'a';
+    msg[2] = 's';
+    msg[3] = 'k';
+    msg[4] = '1';
+    msg[5] = '\n';
 
     while(1)
     {
-        asm volatile("mov %%ecx, 1      ;"
+        asm volatile("mov %%ecx, 6     ;"
                  "mov %%ebx, %0     ;"
                  "mov %%eax, 0x01   ;"
                  "int 0x30          ;"
@@ -24,7 +29,7 @@ void task1()
             : "m" (msg)
             :
         );
-        for(i=0; i<10000000; i++);
+        for(i=0; i<10000; i++);
     }
 }
 
@@ -32,11 +37,16 @@ void task2()
 {
     int i;
     char *msg = (char*) 0x40000100;
-    msg[0] = '2';
+    msg[0] = 't';
+    msg[1] = 'a';
+    msg[2] = 's';
+    msg[3] = 'k';
+    msg[4] = '2';
+    msg[5] = '\n';
 
     while(1)
     {
-        asm volatile("mov %%ecx, 1      ;"
+        asm volatile("mov %%ecx, 6      ;"
                  "mov %%ebx, %0     ;"
                  "mov %%eax, 0x01   ;"
                  "int 0x30          ;"
