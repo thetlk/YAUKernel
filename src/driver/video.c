@@ -1,5 +1,7 @@
 #include <driver/video.h>
 #include <sys/asm.h>
+#include <libc/string.h>
+#include <stdarg.h>
 
 unsigned int line = 0;
 unsigned int column = 0;
@@ -156,4 +158,73 @@ void video_print_color(char *str, char color)
 void video_print(char *str)
 {
     video_print_color(str, COLOR(WHITE, BLACK));
+}
+
+void video_printf(char *s, ...)
+{
+    va_list ap;
+    char buffer[32];
+    char c;
+    int int_val;
+    unsigned int unsigned_int_val;
+    int negative;
+
+    va_start(ap, s);
+
+    while((c = *s++) != 0)
+    {
+        negative = 0;
+
+        if(c == 0)
+        {
+            break;
+        }
+        else if(c == '%')
+        {
+            c = *s++;
+
+            if(c == 'd')
+            {
+                int_val = va_arg(ap, int);
+                if(int_val < 0)
+                {
+                    unsigned_int_val = -int_val;
+                    negative = 1;
+                } else {
+                    unsigned_int_val = int_val;
+                }
+
+                itoa(buffer, unsigned_int_val, 10);
+                if(negative)
+                {
+                    video_print("-");
+                }
+                video_print(buffer);
+            }
+            else if(c == 'u')
+            {
+                unsigned_int_val = va_arg(ap, int);
+                itoa(buffer, unsigned_int_val, 10);
+                video_print(buffer);
+            }
+            else if(c == 'x')
+            {
+                unsigned_int_val = va_arg(ap, int);
+                itoa(buffer, unsigned_int_val, 16);
+                video_printf("%s", buffer);
+            }
+            else if(c == 'p')
+            {
+                video_printf("0x%x", va_arg(ap, int));
+            }
+            else if(c == 's')
+            {
+                video_print((char *) va_arg(ap, int));
+            }
+
+        } else {
+            video_putchar(c);
+        }
+    }
+
 }

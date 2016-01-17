@@ -1,6 +1,6 @@
 #include <sys/pagemem.h>
 #include <sys/asm.h>
-#include <libc/mem.h>
+#include <libc/string.h>
 #include <driver/video.h>
 
 unsigned int *pd0; /* kernel page directory */

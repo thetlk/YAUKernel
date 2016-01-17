@@ -1,7 +1,7 @@
 #include <sys/task.h>
 #include <sys/pagemem.h>
 #include <sys/scheduler.h>
-#include <libc/mem.h>
+#include <libc/string.h>
 #include <driver/video.h>
 
 void task_load(void *physaddr, void *function, unsigned int size)

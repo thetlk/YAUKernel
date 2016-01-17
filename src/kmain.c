@@ -6,7 +6,6 @@
 #include <sys/task.h>
 #include <driver/pic.h>
 #include <driver/video.h>
-#include <libc/mem.h>
 
 void task1()
 {
