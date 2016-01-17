@@ -138,6 +138,7 @@ If interrupted inside user code :
 
 void schedule(struct pushed_registers *regs)
 {
+    struct tss *ktss = tss_get();
 
     if(n_task == 0)
     {
@@ -170,7 +171,7 @@ void schedule(struct pushed_registers *regs)
         // task interrupted inside kernel code
         if(current_task->regs.cs == 0x08)
         {
-            current_task->regs.ss = tss_get_ss0();
+            current_task->regs.ss = ktss->ss0;
             current_task->regs.esp = regs->esp_kernel + 3*4; // ebx, edx, ecx, eax
         } else { // interrupted inside user code
             current_task->regs.ss = regs->ss;
@@ -178,8 +179,8 @@ void schedule(struct pushed_registers *regs)
         }
 
         // save tss state
-        current_task->kstack.ss0 = tss_get_ss0();
-        current_task->kstack.esp0 = tss_get_esp0();
+        current_task->kstack.ss0 = ktss->ss0;
+        current_task->kstack.esp0 = ktss->esp0;
 
         // simple roundrobin - just takes next task
         current_task = &task_list[(current_task->pid + 1)%n_task];

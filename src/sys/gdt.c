@@ -129,9 +129,9 @@ void gdt_init()
     tss_update(0x18, 0x20000);
 
     // init kernel tss entry in gdt (base only)
-    kernel_gdt[7].base_low = BASE_LOW((unsigned int) tss_get_address());
-    kernel_gdt[7].base_high_1 = BASE_HIGH_1((unsigned int) tss_get_address());
-    kernel_gdt[7].base_high_2 = BASE_HIGH_2((unsigned int) tss_get_address());
+    kernel_gdt[7].base_low = BASE_LOW((unsigned int) tss_get());
+    kernel_gdt[7].base_high_1 = BASE_HIGH_1((unsigned int) tss_get());
+    kernel_gdt[7].base_high_2 = BASE_HIGH_2((unsigned int) tss_get());
 
     // init gdt register
     kernel_gdt_register.limit = sizeof(kernel_gdt);

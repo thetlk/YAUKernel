@@ -43,9 +43,7 @@ struct tss
     unsigned short io_map;
 } __attribute__((packed));
 
-void *tss_get_address();
-unsigned int tss_get_ss0();
-unsigned int tss_get_esp0();
+struct tss *tss_get();
 void tss_update(unsigned int ss0, unsigned int esp0);
 
 #endif

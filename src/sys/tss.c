@@ -2,23 +2,13 @@
 
 static struct tss kernel_tss = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
-void *tss_get_address()
+struct tss *tss_get()
 {
-	return (void*) &kernel_tss;
-}
-
-unsigned int tss_get_ss0()
-{
-	return kernel_tss.ss0;
-}
-
-unsigned int tss_get_esp0()
-{
-	return kernel_tss.esp0;
+    return &kernel_tss;
 }
 
 void tss_update(unsigned int ss0, unsigned int esp0)
 {
-	kernel_tss.ss0 = ss0;
-	kernel_tss.esp0 = esp0;
+    kernel_tss.ss0 = ss0;
+    kernel_tss.esp0 = esp0;
 }
