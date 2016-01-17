@@ -12,7 +12,7 @@ struct pushed_registers
     unsigned int edi;
     unsigned int esi;
     unsigned int ebp;
-    unsigned int esp_naze;
+    unsigned int esp_kernel;
     unsigned int ebx;
     unsigned int edx;
     unsigned int ecx;
