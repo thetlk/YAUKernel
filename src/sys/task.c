@@ -19,10 +19,10 @@ void task_load(void *physaddr, void *function, unsigned int size)
     t.regs.cs = 0x23;
     t.regs.eip = 0x40000000;
     t.regs.ds = 0x2B;
+    t.regs.fs = 0x2B;
+    t.regs.es = 0x2B;
+    t.regs.gs = 0x2B;
     t.regs.cr3 = (unsigned int) page_directory;
-    t.regs.fs = 0x0;
-    t.regs.es = 0x0;
-    t.regs.gs = 0x0;
     t.regs.eflags = 0x0;
     t.regs.eax = 0;
     t.regs.ebx = 0;
