@@ -10,7 +10,7 @@
 
 void task1()
 {
-    // int i;
+    int i;
     char *msg = (char*) 0x40000100;
     msg[0] = '1';
 
@@ -24,13 +24,13 @@ void task1()
             : "m" (msg)
             :
         );
-        // for(i=0; i<1000000; i++);
+        for(i=0; i<10000000; i++);
     }
 }
 
 void task2()
 {
-    // int i;
+    int i;
     char *msg = (char*) 0x40000100;
     msg[0] = '2';
 
@@ -44,7 +44,7 @@ void task2()
             : "m" (msg)
             :
         );
-        // for(i=0; i<10000000; i++);
+        for(i=0; i<10000000; i++);
     }
 }
 
@@ -59,8 +59,8 @@ void kmain_continue()
 
     pagemem_init();
 
-    task_load((void*) 0x100000, &task1, 0x1001);
-    task_load((void*) 0x200000, &task2, 0x1001);
+    task_load((void*) 0x100000, &task1, 0x1000);
+    task_load((void*) 0x200000, &task2, 0x1000);
 
     video_print_color("Enable interrupts !\n", COLOR(WHITE, GREEN));
     sti(); // enable interrupts

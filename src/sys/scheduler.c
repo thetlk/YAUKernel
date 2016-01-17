@@ -56,57 +56,57 @@ void schedule(struct pushed_registers *regs)
     current_task->regs.eflags |= 0x200; // set IF flag
     current_task->regs.eflags &= 0xFFFFBFFF; // removes NT flag
     asm volatile(
-        "push %[ss] ;"
-        "push %[esp] ;"
-        "push %[eflags] ;"
-        "push %[cs] ;"
-        "push %[eip] ;"
-        "push %[eax]  ;"
-        "push %[ebx]  ;"
-        "push %[ecx]  ;"
-        "push %[edx]  ;"
-        "push %[ebp]  ;"
-        "push %[esi]  ;"
-        "push %[edi]  ;"
-        "push %[ds]   ;"
-        "push %[es]   ;"
-        "push %[fs]   ;"
-        "push %[gs]   ;"
-        "mov al, 0x20 ;"
-        "out 0x20, al ;"
-        "mov %%eax, %[cr3] ;"
-        "mov %%cr3, %%eax ;"
-        "pop %%gs  ;"
-        "pop %%fs  ;"
-        "pop %%es  ;"
-        "pop %%ds  ;"
-        "pop %%edi  ;"
-        "pop %%esi  ;"
-        "pop %%ebp  ;"
-        "pop %%edx ;"
-        "pop %%ecx   ;"
-        "pop %%ebx   ;"
-        "pop %%eax   ;"
+        "push %[ss]         ;"
+        "push %[esp]        ;"
+        "push %[eflags]     ;"
+        "push %[cs]         ;"
+        "push %[eip]        ;"
+        "push %[eax]        ;"
+        "push %[ebx]        ;"
+        "push %[ecx]        ;"
+        "push %[edx]        ;"
+        "push %[ebp]        ;"
+        "push %[esi]        ;"
+        "push %[edi]        ;"
+        "push %[ds]         ;"
+        "push %[es]         ;"
+        "push %[fs]         ;"
+        "push %[gs]         ;"
+        "mov al, 0x20       ;"
+        "out 0x20, al       ;"
+        "mov %%eax, %[cr3]  ;"
+        "mov %%cr3, %%eax   ;"
+        "pop %%gs           ;"
+        "pop %%fs           ;"
+        "pop %%es           ;"
+        "pop %%ds           ;"
+        "pop %%edi          ;"
+        "pop %%esi          ;"
+        "pop %%ebp          ;"
+        "pop %%edx          ;"
+        "pop %%ecx          ;"
+        "pop %%ebx          ;"
+        "pop %%eax          ;"
         "iret"
         :
-        : [ss] "m" (current_task->regs.ss),
-          [esp] "m" (current_task->regs.esp),
-          [eflags] "m" (current_task->regs.eflags),
-          [cs] "m" (current_task->regs.cs),
-          [eip] "m" (current_task->regs.eip),
-          [eax] "m" (current_task->regs.eax),
-          [ebx] "m" (current_task->regs.ebx),
-          [ecx] "m" (current_task->regs.ecx),
-          [edx] "m" (current_task->regs.edx),
-          [ebp] "m" (current_task->regs.ebp),
-          [esi] "m" (current_task->regs.esi),
-          [edi] "m" (current_task->regs.edi),
-          [ds] "m" (current_task->regs.ds),
-          [es] "m" (current_task->regs.es),
-          [fs] "m" (current_task->regs.fs),
-          [gs] "m" (current_task->regs.gs),
-          [cr3] "m" (current_task->regs.cr3)
-        : "eax", "esp"
+        : [ss]      "m" (current_task->regs.ss),
+          [esp]     "m" (current_task->regs.esp),
+          [eflags]  "m" (current_task->regs.eflags),
+          [cs]      "m" (current_task->regs.cs),
+          [eip]     "m" (current_task->regs.eip),
+          [eax]     "m" (current_task->regs.eax),
+          [ebx]     "m" (current_task->regs.ebx),
+          [ecx]     "m" (current_task->regs.ecx),
+          [edx]     "m" (current_task->regs.edx),
+          [ebp]     "m" (current_task->regs.ebp),
+          [esi]     "m" (current_task->regs.esi),
+          [edi]     "m" (current_task->regs.edi),
+          [ds]      "m" (current_task->regs.ds),
+          [es]      "m" (current_task->regs.es),
+          [fs]      "m" (current_task->regs.fs),
+          [gs]      "m" (current_task->regs.gs),
+          [cr3]     "m" (current_task->regs.cr3)
+        : "eax"
     );
 
 }

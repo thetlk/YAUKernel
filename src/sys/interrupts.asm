@@ -52,7 +52,6 @@ _asm_pf:
     iret
 
 _asm_default_interrupt:
-    xchg bx, bx
     SAVE_REGS
     call int_default
     END_OF_INTERRUPT
