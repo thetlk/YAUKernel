@@ -1,3 +1,4 @@
+#include <boot/multiboot.h>
 #include <sys/gdt.h>
 #include <sys/idt.h>
 #include <sys/asm.h>
@@ -72,16 +73,20 @@ void kmain_continue()
     task_load((void*) 0x200000, &task2, 0x1000);
 
     video_print_color("Enable interrupts !\n", COLOR(WHITE, GREEN));
-    sti(); // enable interrupts
+    // sti(); // enable interrupts
 
     while(1);
 }
 
-
-void kmain()
+void kmain(unsigned long magic, struct multiboot_info *mbi)
 {
     video_screen_clean();
     video_print("YAUK !\n");
+
+    if(magic == MULTIBOOT_BOOTLOADER_MAGIC)
+    {
+        multiboot_display(mbi);
+    }
     
     gdt_init();
     set_ss_esp();
