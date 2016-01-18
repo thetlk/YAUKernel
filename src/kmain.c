@@ -73,7 +73,7 @@ void kmain_continue()
     task_load((void*) 0x200000, &task2, 0x1000);
 
     video_print_color("Enable interrupts !\n", COLOR(WHITE, GREEN));
-    // sti(); // enable interrupts
+    sti(); // enable interrupts
 
     while(1);
 }
