@@ -164,16 +164,23 @@ void video_printf(char *s, ...)
 {
     va_list ap;
     char buffer[32];
+    char tmp[32];
+    unsigned int buffer_size;
     char c;
     int int_val;
     unsigned int unsigned_int_val;
+    unsigned long long longlong_val;
     int negative;
+    int padding;
 
     va_start(ap, s);
 
     while((c = *s++) != 0)
     {
+        memset(buffer, 0, sizeof(buffer));
+        buffer_size = 0;
         negative = 0;
+        padding = 0;
 
         if(c == 0)
         {
@@ -182,6 +189,12 @@ void video_printf(char *s, ...)
         else if(c == '%')
         {
             c = *s++;
+
+            if(c >= '0' && c <= '9')
+            {
+                padding = c - '0';
+                c = *s++;
+            }
 
             if(c == 'd')
             {
@@ -195,6 +208,14 @@ void video_printf(char *s, ...)
                 }
 
                 itoa(buffer, unsigned_int_val, 10);
+                buffer_size = strlen(buffer);
+                if(padding != 0 && buffer_size < padding)
+                {
+                    memcpy(tmp, buffer, buffer_size+1);
+                    memset(buffer, '0', padding - buffer_size);
+                    memcpy(buffer + padding - buffer_size, tmp, buffer_size+1);
+                }
+
                 if(negative)
                 {
                     video_print("-");
@@ -205,17 +226,49 @@ void video_printf(char *s, ...)
             {
                 unsigned_int_val = va_arg(ap, int);
                 itoa(buffer, unsigned_int_val, 10);
+
+                buffer_size = strlen(buffer);
+                if(padding != 0 && buffer_size < padding)
+                {
+                    memcpy(tmp, buffer, buffer_size+1);
+                    memset(buffer, '0', padding - buffer_size);
+                    memcpy(buffer + padding - buffer_size, tmp, buffer_size+1);
+                }
                 video_print(buffer);
             }
             else if(c == 'x')
             {
                 unsigned_int_val = va_arg(ap, int);
                 itoa(buffer, unsigned_int_val, 16);
+
+                buffer_size = strlen(buffer);
+                if(padding != 0 && buffer_size < padding)
+                {
+                    memcpy(tmp, buffer, buffer_size+1);
+                    memset(buffer, '0', padding - buffer_size);
+                    memcpy(buffer + padding - buffer_size, tmp, buffer_size+1);
+                }
                 video_printf("%s", buffer);
+            }
+            else if(c == 'l') // long long
+            {
+                c = *s++;
+                longlong_val = va_arg(ap, long long);
+
+                if(c == 'x')
+                {
+                    if(((longlong_val >> 32) & 0xFFFFFFFF) != 0)
+                    {
+                        video_printf("%x", (longlong_val >> 32) & 0xFFFFFFFF);
+                        video_printf("%8x", longlong_val & 0xFFFFFFFF);
+                    } else {
+                        video_printf("%x", longlong_val & 0xFFFFFFFF);
+                    }
+                }
             }
             else if(c == 'p')
             {
-                video_printf("0x%x", va_arg(ap, int));
+                video_printf("0x%8x", va_arg(ap, int));
             }
             else if(c == 's')
             {
