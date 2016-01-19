@@ -48,8 +48,8 @@ struct multiboot_module
 struct multiboot_memory_map
 {
     unsigned int size;
-    unsigned int base_addr_low, base_addr_high;
-    unsigned int length_low, length_high;
+    unsigned long long base;
+    unsigned long long length;
     unsigned int type;
 };
 

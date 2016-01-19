@@ -46,11 +46,10 @@ void multiboot_display(struct multiboot_info *mbi)
         video_printf("\t- memory map :\n");
         while((unsigned int) mmap < mbi->mmap_addr + mbi->mmap_length)
         {
-            video_printf("\t\t- addr = 0x%x%x, length = 0x%x%x, type = %s (0x%x)\n",
-                mmap->base_addr_high,
-                mmap->base_addr_low,
-                mmap->length_high,
-                mmap->length_low,
+            video_printf("\t\t- 0x%lx -- 0x%lx (0x%lx) %s (0x%x)\n",
+                mmap->base,
+                mmap->base + mmap->length,
+                mmap->length,
                 (mmap->type == 1) ? "RAM" : "reserved",
                 mmap->type);
 
