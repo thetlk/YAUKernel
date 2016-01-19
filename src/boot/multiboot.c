@@ -39,6 +39,23 @@ void multiboot_display(struct multiboot_info *mbi)
         }
     }
 
-    
+    if(CHECK_FLAG(mbi->flags, FLAG_MMAP))
+    {
+        struct multiboot_memory_map *mmap = (struct multiboot_memory_map *) mbi->mmap_addr;
+
+        video_printf("\t- memory map :\n");
+        while((unsigned int) mmap < mbi->mmap_addr + mbi->mmap_length)
+        {
+            video_printf("\t\t- addr = 0x%x%x, length = 0x%x%x, type = %s (0x%x)\n",
+                mmap->base_addr_high,
+                mmap->base_addr_low,
+                mmap->length_high,
+                mmap->length_low,
+                (mmap->type == 1) ? "RAM" : "reserved",
+                mmap->type);
+
+            mmap = (struct multiboot_memory_map *) ((unsigned int) mmap + mmap->size + sizeof(mmap->size));
+        }
+    }
 
 }

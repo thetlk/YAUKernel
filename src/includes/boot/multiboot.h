@@ -14,6 +14,7 @@ https://www.gnu.org/software/grub/manual/multiboot/multiboot.html
 #define FLAG_MODS 3
 #define FLAG_AOUT_SYMBOL 4
 #define FLAG_ELF_HEADER 5
+#define FLAG_MMAP 6
 
 struct multiboot_aout_symbol_table
 {
@@ -42,6 +43,14 @@ struct multiboot_module
 
     /* padding to take it to 16 bytes (must be zero) */
     unsigned int pad;
+};
+
+struct multiboot_memory_map
+{
+    unsigned int size;
+    unsigned int base_addr_low, base_addr_high;
+    unsigned int length_low, length_high;
+    unsigned int type;
 };
 
 struct multiboot_info
