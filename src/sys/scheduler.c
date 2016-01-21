@@ -1,4 +1,5 @@
 #include <sys/scheduler.h>
+#include <sys/interrupts.h>
 #include <sys/task.h>
 #include <sys/tss.h>
 #include <driver/video.h>

@@ -46,7 +46,9 @@ _asm_gp:
     ; page fault
 _asm_pf:
     SAVE_REGS
+    push esp
     call int_pagefault
+    add esp, 4
     END_OF_INTERRUPT
     RESTORE_REGS
     iret
