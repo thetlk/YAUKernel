@@ -63,10 +63,6 @@ void kmain_continue()
     idt_init();
     pic_init();
 
-    video_print("Load TSS ... ");
-    ltr(0x38); // TSS at 0x38 gdt entry
-    video_print_ok();
-
     pagemem_init();
 
     task_load((void*) 0x100000, &task1, 0x1000);

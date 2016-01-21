@@ -142,4 +142,8 @@ void gdt_init()
     lgdt(kernel_gdt_register, 0x10); // data at entry 0x10
     video_print_ok();
 
+    video_print("Load TSS ... ");
+    ltr(0x38); // TSS at 0x38 gdt entry
+    video_print_ok();
+
 }
