@@ -83,10 +83,13 @@ void kmain(unsigned long magic, struct multiboot_info *mbi)
     video_screen_clean();
     video_print("YAUK !\n");
 
-    if(magic == MULTIBOOT_BOOTLOADER_MAGIC)
+    if(magic != MULTIBOOT_BOOTLOADER_MAGIC)
     {
-        multiboot_display(mbi);
+        video_printf("Bad magic - unable to boot :( (0x%x)\n", magic);
+        asm volatile("hlt");
     }
+
+    multiboot_display(mbi);
     
     gdt_init();
     set_ss_esp();
