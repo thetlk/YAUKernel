@@ -58,18 +58,18 @@ void task2()
     }
 }
 
-void kmain_continue()
+void kmain_continue(struct multiboot_info *mbi)
 {
     idt_init();
     pic_init();
 
-    pagemem_init();
+    pagemem_init(mbi);
 
-    task_load((void*) 0x100000, &task1, 0x1000);
-    task_load((void*) 0x200000, &task2, 0x1000);
+    // task_load((void*) 0x100000, &task1, 0x1000); // segfault here
+    // task_load((void*) 0x200000, &task2, 0x1000);
 
     video_print_color("Enable interrupts !\n", COLOR(WHITE, GREEN));
-    sti(); // enable interrupts
+    // sti(); // enable interrupts
 
     while(1);
 }
@@ -90,5 +90,5 @@ void kmain(unsigned long magic, struct multiboot_info *mbi)
     gdt_init();
     set_ss_esp();
 
-    kmain_continue();
+    kmain_continue(mbi);
 }
