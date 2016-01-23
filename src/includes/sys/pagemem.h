@@ -16,9 +16,16 @@ void *pagemem_pagedirectory_create(void *physaddr, unsigned int size);
 
 #define USER_OFFSET 0x40000000
 #define KERNEL_MAX_ADDR 0x800000 // 8Mo
+#define KERNEL_PAGE_DIRECTORY_ADDR 0x1000
+#define KERNEL_PAGE_0 0x0
+#define KERNEL_PAGE_1 0x400000
 
 #define release_page_frame(p_addr) \
    mem_bitmap[((unsigned int) p_addr/PAGESIZE)/8] &= ~(1 << (((unsigned int) p_addr/PAGESIZE)%8));
+
+#define PG_PRESENT 0x0001
+#define PG_WRITE   0x0002
+#define PG_4MB     0x0080
 
 struct page_directory_entry
 {

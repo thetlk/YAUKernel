@@ -4,8 +4,9 @@
 #include <boot/multiboot.h>
 #include <driver/video.h>
 
-unsigned int *pd0; /* kernel page directory */
-unsigned int *pt0; /* kernel page table */
+unsigned int *pd0 = (unsigned int *) KERNEL_PAGE_DIRECTORY_ADDR; /* kernel page directory */
+unsigned int *pg0 = (unsigned int *) KERNEL_PAGE_0;
+unsigned int *pg1 = (unsigned int *) KERNEL_PAGE_1;
 unsigned char mem_bitmap[RAM_MAXPAGE / 8];
 
 void set_page_frame_used(unsigned int page)
@@ -45,7 +46,6 @@ void pagemem_init(struct multiboot_info *mbi)
 {
     unsigned int i;
     unsigned int last_page;
-    unsigned int page_addr;
 
     // number of last page
     last_page = (mbi->mem_upper) * 1024 / PAGESIZE;
@@ -86,24 +86,18 @@ void pagemem_init(struct multiboot_info *mbi)
         }
     }
 
-    pd0 = pagemem_get_page_frame();
-    pt0 = pagemem_get_page_frame();
-
-    pd0[0] = (unsigned int) pt0;
-    pd0[0] |= 3; // present | writable
-    for(i=1; i<1024; i++)
+    pd0[0] = (unsigned int) pg0 | PG_PRESENT | PG_WRITE | PG_4MB;
+    pd0[1] = (unsigned int) pg1 | PG_PRESENT | PG_WRITE | PG_4MB;
+    for(i=2; i<1023; i++)
     {
-        pd0[i] = 0;
+        pd0[i] = (unsigned int) pg1 + PAGESIZE * i;
+        pd0[i] |= PG_PRESENT | PG_WRITE;
+        // pd0[i] = 0;
     }
-
-    page_addr = 0;
-    for(i=0; i<1024; i++, page_addr += 4096)
-    {
-        pt0[i] = page_addr;
-        pt0[i] |= 3; // Present | Writeable
-    }
+    pd0[1023] = (unsigned int) pd0 | PG_PRESENT | PG_WRITE;
 
     mov_cr3(pd0);
+    cr4_set_pse_flag();
     cr0_enable_paging();
 
 }

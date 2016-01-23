@@ -98,4 +98,11 @@ asm ( assembler template
         :::                            \
     );
 
+#define cr4_set_pse_flag()              \
+    asm volatile("mov %%eax, %%cr4  ;"  \
+              "or %%eax, 0x00000010 ;"  \
+              "mov %%cr4, %%eax     ;"  \
+              :::                       \
+            );
+
 #endif
