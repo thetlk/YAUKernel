@@ -4,21 +4,7 @@
 #include <boot/multiboot.h>
 
 void pagemem_init(struct multiboot_info *mbi);
-void *pagemem_get_page_frame();
 void *pagemem_pagedirectory_create(void *physaddr, unsigned int size);
-
-#define PAGESIZE 4096
-#define RAM_MAXPAGE 0x100000 // 0x100000*4096 bytes = 4 294 967 296 bytes --> 4Go
-#define VADDR_PD_OFFSET(addr)   ((addr) & 0xFFC00000) >> 22
-#define VADDR_PT_OFFSET(addr)   ((addr) & 0x003FF000) >> 12
-#define VADDR_PG_OFFSET(addr)   (addr) & 0x00000FFF
-#define PAGE(addr)              (addr) >> 12
-
-#define USER_OFFSET 0x40000000
-#define KERNEL_MAX_ADDR 0x800000 // 8Mo
-#define KERNEL_PAGE_DIRECTORY_ADDR 0x1000
-#define KERNEL_PAGE_0 0x0
-#define KERNEL_PAGE_1 0x400000
 
 #define release_page_frame(p_addr) \
    mem_bitmap[((unsigned int) p_addr/PAGESIZE)/8] &= ~(1 << (((unsigned int) p_addr/PAGESIZE)%8));

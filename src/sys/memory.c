@@ -9,6 +9,33 @@ void memory_set_page_used(unsigned int page)
     mem_bitmap[page/8] |= (1 << (page%8));
 }
 
+void *memory_get_unused_page()
+{
+    unsigned int byte;
+    unsigned int bit;
+    unsigned int page;
+    void *physaddr;
+
+    for(byte = 0; byte<RAM_MAXPAGE/8; byte++)
+    {
+        if(mem_bitmap[byte] != 0xFF)
+        {
+            for(bit = 0; bit<8; bit++)
+            {
+                if((mem_bitmap[byte] & (1<<bit)) == 0)
+                {
+                    page = 8* byte + bit;
+                    physaddr = (void *) (page + PAGE_SIZE);
+                    memory_set_page_used(page);
+                    return physaddr;
+                }
+            }
+        }
+    }
+
+    return (void *) -1;
+}
+
 void memory_init(struct multiboot_info *mbi)
 {
     unsigned int i;

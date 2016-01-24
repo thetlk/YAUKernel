@@ -1,6 +1,7 @@
 #include <sys/task.h>
 #include <sys/pagemem.h>
 #include <sys/scheduler.h>
+#include <sys/memory.h>
 #include <libc/string.h>
 #include <driver/video.h>
 
@@ -14,10 +15,10 @@ void task_load(void *physaddr, void *function, unsigned int size)
     memcpy(physaddr, function, size);
 
     page_directory = pagemem_pagedirectory_create(physaddr, size);
-    kernel_stack = pagemem_get_page_frame();
+    kernel_stack = memory_get_unused_page();
 
     t.kstack.ss0 = 0x18;
-    t.kstack.esp0 = (unsigned int) kernel_stack + PAGESIZE;
+    t.kstack.esp0 = (unsigned int) kernel_stack + PAGE_SIZE;
     t.regs.ss = 0x33;
     t.regs.esp = 0x40001000;
     t.regs.cs = 0x23;
