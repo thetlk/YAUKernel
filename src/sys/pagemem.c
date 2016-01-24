@@ -6,18 +6,17 @@
 #include <driver/video.h>
 
 unsigned int *pd0 = (unsigned int *) KERNEL_PAGE_DIRECTORY_ADDR; /* kernel page directory */
-unsigned int *pg0 = (unsigned int *) KERNEL_PAGE_0;
-unsigned int *pg1 = (unsigned int *) KERNEL_PAGE_1;
 
 void pagemem_init(struct multiboot_info *mbi)
 {
     unsigned int i;
 
-    pd0[0] = (unsigned int) pg0 | PG_PRESENT | PG_WRITE | PG_4MB;
-    pd0[1] = (unsigned int) pg1 | PG_PRESENT | PG_WRITE | PG_4MB;
+    // identity mapping from 0x0 to 0x800000
+    pd0[0] = 0x000000 | PG_PRESENT | PG_WRITE | PG_4MB;
+    pd0[1] = 0x400000 | PG_PRESENT | PG_WRITE | PG_4MB;
     for(i=2; i<1023; i++)
     {
-        pd0[i] = (unsigned int) pg1 + PAGE_SIZE * i;
+        pd0[i] = (unsigned int) 0x400000 + PAGE_SIZE * i;
         pd0[i] |= PG_PRESENT | PG_WRITE;
         // pd0[i] = 0;
     }
@@ -26,6 +25,7 @@ void pagemem_init(struct multiboot_info *mbi)
     mov_cr3(pd0);
     cr4_set_pse_flag();
     cr0_enable_paging();
+    // asm volatile("xchg %%bx, %%bx ;" ::: );
 
 }
 
