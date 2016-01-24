@@ -45,46 +45,6 @@ void *pagemem_get_page_frame()
 void pagemem_init(struct multiboot_info *mbi)
 {
     unsigned int i;
-    unsigned int last_page;
-
-    // number of last page
-    last_page = (mbi->mem_upper) * 1024 / PAGESIZE;
-
-    // empty bitmap
-    for(i=0; i<last_page/8; i++)
-    {
-        mem_bitmap[i] = 0;
-    }
-
-    // set used page that don't exists
-    for(i=last_page/8; i<RAM_MAXPAGE/8; i++)
-    {
-        mem_bitmap[i] = 0xFF;
-    }
-
-    // kernel pages
-    for(i=PAGE(0x0); i<PAGE(KERNEL_MAX_ADDR); i++)
-    {
-        set_page_frame_used(i);
-    }
-
-    // set page frame used for each reserved range
-    if((mbi->flags) & (1 << (FLAG_MMAP)))
-    {
-        struct multiboot_memory_map *mmap = (struct multiboot_memory_map *) mbi->mmap_addr;
-
-        while((unsigned int) mmap < mbi->mmap_addr + mbi->mmap_length)
-        {
-            if(mmap->type != 1)
-            {
-                for(i=PAGE(mmap->base); i<PAGE(mmap->base + mmap->length); i++)
-                {
-                    set_page_frame_used(i);
-                }
-            }
-            mmap = (struct multiboot_memory_map *) ((unsigned int) mmap + mmap->size + sizeof(mmap->size));
-        }
-    }
 
     pd0[0] = (unsigned int) pg0 | PG_PRESENT | PG_WRITE | PG_4MB;
     pd0[1] = (unsigned int) pg1 | PG_PRESENT | PG_WRITE | PG_4MB;

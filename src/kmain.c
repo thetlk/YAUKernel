@@ -4,6 +4,7 @@
 #include <sys/asm.h>
 #include <sys/syscall.h>
 #include <sys/pagemem.h>
+#include <sys/memory.h>
 #include <sys/task.h>
 #include <driver/pic.h>
 #include <driver/video.h>
@@ -63,6 +64,7 @@ void kmain_continue(struct multiboot_info *mbi)
     idt_init();
     pic_init();
 
+    memory_init(mbi);
     pagemem_init(mbi);
 
     // task_load((void*) 0x100000, &task1, 0x1000); // segfault here
