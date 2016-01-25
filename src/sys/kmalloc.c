@@ -5,12 +5,6 @@
 
 void *kernel_heap;
 
-void kmalloc_init()
-{
-    kernel_heap = (void *) KERNEL_HEAP;
-    kmalloc_ksbrk(1);
-}
-
 void *kmalloc_ksbrk(unsigned int n)
 {
     unsigned int i;
@@ -42,4 +36,78 @@ void *kmalloc_ksbrk(unsigned int n)
     chunk->used = 0;
 
     return 0;
+}
+
+void kmalloc_init()
+{
+    kernel_heap = (void *) KERNEL_HEAP;
+    kmalloc_ksbrk(1);
+}
+
+void *kmalloc(unsigned int size)
+{
+    unsigned int alloc_size;
+    struct kmalloc_chunk *chunk;
+    struct kmalloc_chunk *split;
+
+    alloc_size = sizeof(struct kmalloc_chunk) + size;
+    if(alloc_size < 16)
+    {
+        alloc_size = 16;
+    }
+
+    chunk = (struct kmalloc_chunk *) KERNEL_HEAP;
+    while(chunk->used == 1 || chunk->size < alloc_size)
+    {
+
+        if(chunk->size == 0)
+        {
+            video_print("kmalloc(): chunk seems to be corrupted (size = 0)\n");
+            asm volatile("hlt");
+        }
+
+        chunk = (struct kmalloc_chunk *) ((char *) chunk + chunk->size);
+
+        if(chunk == kernel_heap)
+        {
+            if(kmalloc_ksbrk((alloc_size / PAGE_SIZE) + 1) == (void *) -1)
+            {
+                video_print("kmalloc(): no memory left :'(\n");
+                asm volatile("hlt");
+            }
+        }
+
+        if(chunk > (struct kmalloc_chunk *) kernel_heap)
+        {
+            video_printf("chunk at %p but heap limit is at %p !\n", chunk, kernel_heap);
+            asm volatile("hlt");
+        }
+
+    }
+
+    split = (struct kmalloc_chunk *) ((char *) chunk + alloc_size);
+    split->size = chunk->size - alloc_size;
+    split->used = 0;
+
+    chunk->size = alloc_size;
+    chunk->used = 1;
+
+    return (char *) chunk + sizeof(struct kmalloc_chunk);
+}
+
+void kfree(void *addr)
+{
+    struct kmalloc_chunk *chunk;
+    struct kmalloc_chunk *next;
+
+    chunk = (struct kmalloc_chunk *) (addr - sizeof(struct kmalloc_chunk));
+    chunk->used = 0;
+
+    // merge this chunk with next free chunks
+    while((next = (struct kmalloc_chunk *) ((char *) chunk + chunk->size))
+        && next < (struct kmalloc_chunk *) kernel_heap
+        && next->used == 0)
+    {
+        chunk->size += next->size;
+    }
 }

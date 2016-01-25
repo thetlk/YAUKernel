@@ -8,6 +8,7 @@ struct kmalloc_chunk
 } __attribute__((packed));
 
 void kmalloc_init();
-void *kmalloc_ksbrk(unsigned int n);
+void *kmalloc(unsigned int size);
+void kfree(void *addr);
 
 #endif
