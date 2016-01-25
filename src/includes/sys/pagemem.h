@@ -5,6 +5,7 @@
 
 void pagemem_init(struct multiboot_info *mbi);
 void *pagemem_pagedirectory_create(void *physaddr, unsigned int size);
+int pagemem_pd0_add_page(void *virtaddr, void *physaddr);
 
 #define release_page_frame(p_addr) \
    mem_bitmap[((unsigned int) p_addr/PAGESIZE)/8] &= ~(1 << (((unsigned int) p_addr/PAGESIZE)%8));

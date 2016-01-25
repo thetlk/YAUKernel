@@ -6,6 +6,7 @@
 #include <sys/pagemem.h>
 #include <sys/memory.h>
 #include <sys/task.h>
+#include <sys/kmalloc.h>
 #include <driver/pic.h>
 #include <driver/video.h>
 
@@ -66,6 +67,7 @@ void kmain_continue(struct multiboot_info *mbi)
 
     memory_init(mbi);
     pagemem_init(mbi);
+    kmalloc_init();
 
     // task_load((void*) 0x100000, &task1, 0x1000); // segfault here
     // task_load((void*) 0x200000, &task2, 0x1000);

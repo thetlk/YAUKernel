@@ -26,12 +26,16 @@ Kernel space organization :
 
 Physical memory organization :
     identity mapping from 0x0 to 0x800000
+    from 0x400000 to 0x800000 page tables of kernel
 
 */
 
 #define KERNEL_MAX_ADDR 0x800000 // 8Mo
 #define KERNEL_PAGE_DIRECTORY_ADDR 0x1000
-#define USER_OFFSET 0x40000000
+#define KERNEL_PAGE_TABLE_ADDR 0x400000
+#define KERNEL_HEAP 0x10000000
+#define KERNEL_HEAP_MAX 0x40000000
+#define USER_SPACE_BASE_ADDR 0x40000000
 
 #define PAGE_SIZE 4096
 #define RAM_MAXPAGE 0x100000 // 0x100000*4096 bytes = 4 294 967 296 bytes --> 4Go

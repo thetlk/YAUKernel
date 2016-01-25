@@ -24,8 +24,8 @@ void *memory_get_unused_page()
             {
                 if((mem_bitmap[byte] & (1<<bit)) == 0)
                 {
-                    page = 8* byte + bit;
-                    physaddr = (void *) (page + PAGE_SIZE);
+                    page = 8 * byte + bit;
+                    physaddr = (void *) (page * PAGE_SIZE);
                     memory_set_page_used(page);
                     return physaddr;
                 }
