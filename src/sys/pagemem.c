@@ -55,6 +55,18 @@ int pagemem_pd0_add_page(void *virtaddr, void *physaddr)
     return 0;
 }
 
+void pagemem_pd_remove_page(void *virtaddr)
+{
+    unsigned int *page_table_entry;
+
+    if(pagemem_get_physaddr(virtaddr)) // addr is mapped <=>
+    {
+        page_table_entry = PAGE_TABLE_ENTRY_FROM_VIRTADDR(virtaddr);
+        *page_table_entry = *page_table_entry & (~PG_PRESENT);
+        invlpg(virtaddr);
+    }
+}
+
 void *pagemem_pagedirectory_create(void *physaddr, unsigned int size)
 {
     unsigned int page_base = GET_PAGE_INF((unsigned int) physaddr);

@@ -105,4 +105,11 @@ asm ( assembler template
               :::                       \
             );
 
+#define invlpg(virtaddr)      \
+    asm volatile("invlpg %0"  \
+      :                       \
+      : "m" (virtaddr)        \
+      :                       \
+      );
+
 #endif
