@@ -42,14 +42,14 @@ int pagemem_pd0_add_page(void *virtaddr, void *physaddr)
         return -1;
     }
 
-    page_directory_entry = (unsigned int *) PAGE_DIRECTORY_ENTRY_FROM_VIRTADDR(virtaddr);
+    page_directory_entry = PAGE_DIRECTORY_ENTRY_FROM_VIRTADDR(virtaddr);
     if((*page_directory_entry & PG_PRESENT) == 0)
     {
         video_printf("pagemem_pd0_add_page(): kernel page table not found for virtaddr %p\n", virtaddr);
         asm volatile("hlt");
     }
 
-    page_table_entry = (unsigned int *) PAGE_TABLE_ENTRY_FROM_VIRTADDR(virtaddr);
+    page_table_entry = PAGE_TABLE_ENTRY_FROM_VIRTADDR(virtaddr);
     *page_table_entry = (unsigned int) physaddr | (PG_PRESENT | PG_WRITE);
 
     return 0;
@@ -107,10 +107,10 @@ void *pagemem_get_physaddr(void *virtaddr)
     unsigned int *page_directory_entry;
     unsigned int *page_table_entry;
 
-    page_directory_entry = (unsigned int *) PAGE_DIRECTORY_ENTRY_FROM_VIRTADDR(virtaddr);
+    page_directory_entry = PAGE_DIRECTORY_ENTRY_FROM_VIRTADDR(virtaddr);
     if((*page_directory_entry & PG_PRESENT) == 1)
     {
-        page_table_entry = (unsigned int *) PAGE_TABLE_ENTRY_FROM_VIRTADDR(virtaddr);
+        page_table_entry = PAGE_TABLE_ENTRY_FROM_VIRTADDR(virtaddr);
         if((*page_table_entry & PG_PRESENT) == 1)
         {
             return (void*) (*page_table_entry & 0xFFFFF000) + ((unsigned int) virtaddr & 0x00000FFF);

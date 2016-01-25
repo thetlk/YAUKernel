@@ -23,8 +23,8 @@ directly to the first entry of the page directory.
 In the same way, with (0xfffff000 + i) you can directly access to i'th entry
 of the page table ;)
 */
-#define PAGE_DIRECTORY_ENTRY_FROM_VIRTADDR(virtaddr) (0xFFFFF000 | (((unsigned int) virtaddr & 0xFFC00000) >> 20))
-#define PAGE_TABLE_ENTRY_FROM_VIRTADDR(virtaddr) (0xFFC00000 | (((unsigned int) virtaddr & 0xFFFFF000) >> 10))
+#define PAGE_DIRECTORY_ENTRY_FROM_VIRTADDR(virtaddr) (unsigned int *) (0xFFFFF000 | (((unsigned int) virtaddr & 0xFFC00000) >> 20))
+#define PAGE_TABLE_ENTRY_FROM_VIRTADDR(virtaddr) (unsigned int *) (0xFFC00000 | (((unsigned int) virtaddr & 0xFFFFF000) >> 10))
 
 struct page_directory_entry
 {
