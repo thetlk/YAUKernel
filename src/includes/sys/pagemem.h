@@ -6,6 +6,7 @@
 void pagemem_init();
 void *pagemem_pagedirectory_create(void *physaddr, unsigned int size);
 int pagemem_pd0_add_page(void *virtaddr, void *physaddr);
+void *pagemem_get_physaddr(void *virtaddr);
 
 #define release_page_frame(p_addr) \
    mem_bitmap[((unsigned int) p_addr/PAGESIZE)/8] &= ~(1 << (((unsigned int) p_addr/PAGESIZE)%8));

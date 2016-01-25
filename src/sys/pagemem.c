@@ -109,3 +109,21 @@ void *pagemem_pagedirectory_create(void *physaddr, unsigned int size)
 
     return page_directory;
 }
+
+void *pagemem_get_physaddr(void *virtaddr)
+{
+    unsigned int *page_directory_entry;
+    unsigned int *page_table_entry;
+
+    page_directory_entry = (unsigned int *) (0xFFFFF000 | (((unsigned int) virtaddr & 0xFFC00000) >> 20));
+    if((*page_directory_entry & PG_PRESENT) == 1)
+    {
+        page_table_entry = (unsigned int *) (0xFFC00000 | (((unsigned int) virtaddr & 0xFFFFF000) >> 10));
+        if((*page_table_entry & PG_PRESENT) == 1)
+        {
+            return (void*) (*page_table_entry & 0xFFFFF000) + ((unsigned int) virtaddr & 0x00000FFF);
+        }
+    }
+
+    return 0;
+}
