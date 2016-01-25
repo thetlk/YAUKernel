@@ -15,6 +15,17 @@ void *pagemem_get_physaddr(void *virtaddr);
 #define PG_WRITE   0x0002
 #define PG_4MB     0x0080
 
+/*
+page table miroring explanation :
+the last entry of the main page directory goes to the page directory itself,
+so when you access to an address like 0xffc00000 (10 bits to 1), you access
+directly to the first entry of the page directory.
+In the same way, with (0xfffff000 + i) you can directly access to i'th entry
+of the page table ;)
+*/
+#define PAGE_DIRECTORY_ENTRY_FROM_VIRTADDR(virtaddr) (0xFFFFF000 | (((unsigned int) virtaddr & 0xFFC00000) >> 20))
+#define PAGE_TABLE_ENTRY_FROM_VIRTADDR(virtaddr) (0xFFC00000 | (((unsigned int) virtaddr & 0xFFFFF000) >> 10))
+
 struct page_directory_entry
 {
     unsigned char p         : 1;  /* present in memory (swap for exemple) */
