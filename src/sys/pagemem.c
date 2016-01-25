@@ -7,7 +7,7 @@
 
 unsigned int *pd0 = (unsigned int *) KERNEL_PAGE_DIRECTORY_ADDR; /* kernel page directory */
 
-void pagemem_init(struct multiboot_info *mbi)
+void pagemem_init()
 {
     unsigned int i;
 

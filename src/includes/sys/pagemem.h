@@ -3,7 +3,7 @@
 
 #include <boot/multiboot.h>
 
-void pagemem_init(struct multiboot_info *mbi);
+void pagemem_init();
 void *pagemem_pagedirectory_create(void *physaddr, unsigned int size);
 int pagemem_pd0_add_page(void *virtaddr, void *physaddr);
 
