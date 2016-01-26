@@ -48,20 +48,6 @@ Physical memory organization :
 #define GET_PAGE_INF(addr) (ALIGN_PAGE_INF(addr) / PAGE_SIZE)
 #define GET_PAGE_SUP(addr) (ALIGN_PAGE_SUP(addr) / PAGE_SIZE)
 
-struct page_area
-{
-    void *start;
-    void *end;
-    struct page_area *next;
-    struct page_area *prev;
-};
-
-struct page
-{
-    void *physaddr;
-    void *virtaddr;
-};
-
 void memory_set_page_used(unsigned int page);
 void *memory_get_unused_page();
 void memory_init(struct multiboot_info *mbi);
