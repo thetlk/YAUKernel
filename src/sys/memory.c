@@ -152,7 +152,7 @@ struct page *memory_get_page_heap()
         asm volatile("hlt");
     }
 
-    if(pagemem_pd0_add_page(virtaddr, physaddr) == -1)
+    if(pagemem_pagedirectory0_add_page(virtaddr, physaddr) == -1)
     {
         video_printf("memory_get_page_heap(): unable to map :'(\n");
         asm volatile("hlt");
@@ -177,7 +177,7 @@ int memory_release_page_heap(void *virtaddr)
     }
 
     memory_set_page_unused(GET_PAGE_INF(physaddr));
-    pagemem_pd_remove_page(virtaddr);
+    pagemem_pagedirectory_remove_page(virtaddr);
 
     __memory_set_page_heap_unused(((unsigned int) virtaddr - KERNEL_PAGE_HEAP) / PAGE_SIZE);
 

@@ -27,7 +27,7 @@ void *kmalloc_ksbrk(unsigned int n)
             return (void *) -1;
         }
 
-        pagemem_pd0_add_page(kernel_heap, page);
+        pagemem_pagedirectory0_add_page(kernel_heap, page);
 
         kernel_heap += PAGE_SIZE;
     }

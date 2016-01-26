@@ -31,21 +31,21 @@ void pagemem_init()
 
 }
 
-int pagemem_pd0_add_page(void *virtaddr, void *physaddr)
+int pagemem_pagedirectory0_add_page(void *virtaddr, void *physaddr)
 {
     unsigned int *page_directory_entry;
     unsigned int *page_table_entry;
 
     if((unsigned int) virtaddr > USER_SPACE_BASE_ADDR)
     {
-        video_printf("pagemem_pd0_add_page() : %p not in kernel space\n", virtaddr);
+        video_printf("pagemem_pagedirectory0_add_page() : %p not in kernel space\n", virtaddr);
         return -1;
     }
 
     page_directory_entry = PAGE_DIRECTORY_ENTRY_FROM_VIRTADDR(virtaddr);
     if((*page_directory_entry & PG_PRESENT) == 0)
     {
-        video_printf("pagemem_pd0_add_page(): kernel page table not found for virtaddr %p\n", virtaddr);
+        video_printf("pagemem_pagedirectory0_add_page(): kernel page table not found for virtaddr %p\n", virtaddr);
         asm volatile("hlt");
     }
 
@@ -55,7 +55,7 @@ int pagemem_pd0_add_page(void *virtaddr, void *physaddr)
     return 0;
 }
 
-void pagemem_pd_remove_page(void *virtaddr)
+void pagemem_pagedirectory_remove_page(void *virtaddr)
 {
     unsigned int *page_table_entry;
 
