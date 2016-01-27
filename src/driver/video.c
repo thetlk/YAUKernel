@@ -15,9 +15,9 @@ void video_move_cursor()
     outb(0x3D5, c_pos >> 8);
 }
 
-void video_line_clean(unsigned int line)
+void video_line_clean(unsigned int tline)
 {
-    char *video = SCREEN(line, 0);
+    char *video = SCREEN(tline, 0);
     int i;
 
     for(i=0; i<LINE_SIZE*2; i += 2)
