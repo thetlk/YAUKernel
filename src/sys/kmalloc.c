@@ -11,7 +11,7 @@ void *kmalloc_ksbrk(unsigned int n)
     void *page;
     struct kmalloc_chunk *chunk;
 
-    if(kernel_heap + (n * PAGE_SIZE) > (void *) KERNEL_HEAP_MAX)
+    if(((unsigned int) kernel_heap + (n * PAGE_SIZE)) > KERNEL_HEAP_MAX)
     {
         video_printf("kmalloc_ksbrk(): no virtual memory left for the kernel heap\n");
         return (void *) -1;
@@ -29,7 +29,7 @@ void *kmalloc_ksbrk(unsigned int n)
 
         pagemem_pagedirectory0_add_page(kernel_heap, page);
 
-        kernel_heap += PAGE_SIZE;
+        kernel_heap = (void*) (((unsigned int) kernel_heap) + PAGE_SIZE);
     }
 
     chunk->size = PAGE_SIZE * n;
@@ -100,7 +100,7 @@ void kfree(void *addr)
     struct kmalloc_chunk *chunk;
     struct kmalloc_chunk *next;
 
-    chunk = (struct kmalloc_chunk *) (addr - sizeof(struct kmalloc_chunk));
+    chunk = (struct kmalloc_chunk *) (((unsigned int) addr) - sizeof(struct kmalloc_chunk));
     chunk->used = 0;
 
     // merge this chunk with next free chunks

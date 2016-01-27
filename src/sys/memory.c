@@ -120,7 +120,7 @@ void *__memory_get_page_heap_virtaddr()
                 {
                     page = 8 * byte + bit;
                     __memory_set_page_heap_used(page);
-                    virtaddr = (void *) (page * PAGE_SIZE) + KERNEL_PAGE_HEAP;
+                    virtaddr = (void *) ((page * PAGE_SIZE) + KERNEL_PAGE_HEAP);
                     return virtaddr;
                 }
             }

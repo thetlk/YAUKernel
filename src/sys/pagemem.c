@@ -156,13 +156,13 @@ struct page_list *pagemem_pagedirectory_map(struct page_directory *page_director
     page_list->next = 0;
     page_list->prev = 0;
 
-    for(i=0; i<size; i += PAGE_SIZE)
+    for(i=((unsigned int) virtaddr); i < ((unsigned int) virtaddr) + size; i += PAGE_SIZE)
     {
         physaddr = memory_get_unused_page();
-        pagemem_pagedirectory_add_page(page_directory, virtaddr + i, physaddr);
+        pagemem_pagedirectory_add_page(page_directory, (void*) i, physaddr);
 
         page_list->page = kmalloc(sizeof(struct page));
-        page_list->page->virtaddr = virtaddr + i;
+        page_list->page->virtaddr = (void*) i;
         page_list->page->physaddr = physaddr;
 
         page_list->next = kmalloc(sizeof(struct page_list));
@@ -187,7 +187,7 @@ void *pagemem_get_physaddr(void *virtaddr)
         page_table_entry = PAGE_TABLE_ENTRY_FROM_VIRTADDR(virtaddr);
         if((*page_table_entry & PG_PRESENT) == 1)
         {
-            return (void*) (*page_table_entry & 0xFFFFF000) + ((unsigned int) virtaddr & 0x00000FFF);
+            return (void*) ((*page_table_entry & 0xFFFFF000) + ((unsigned int) virtaddr & 0x00000FFF));
         }
     }
 
