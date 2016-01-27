@@ -26,7 +26,7 @@ void multiboot_display(struct multiboot_info *mbi)
     if(CHECK_FLAG(mbi->flags, FLAG_MODS))
     {
         struct multiboot_module *mod = (struct multiboot_module *) mbi->mods_addr;
-        int i;
+        unsigned int i;
         video_printf("\t- mods_count = %d, mods_addr = %p\n", mbi->mods_count, mbi->mods_addr);
 
         for(i=0; i<mbi->mods_count; i++)

@@ -3,8 +3,8 @@
 #include <libc/string.h>
 #include <stdarg.h>
 
-unsigned int line = 0;
-unsigned int column = 0;
+int line = 0;
+int column = 0;
 
 void video_move_cursor()
 {
@@ -171,7 +171,7 @@ void video_printf(char *s, ...)
     unsigned int unsigned_int_val;
     unsigned long long longlong_val;
     int negative;
-    int padding;
+    unsigned int padding;
 
     va_start(ap, s);
 
