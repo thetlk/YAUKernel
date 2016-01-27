@@ -3,17 +3,30 @@
 
 #include <boot/multiboot.h>
 
+struct page_list
+{
+    struct page *page;
+    struct page_list *next;
+    struct page_list *prev;
+};
+
+struct page_directory
+{
+    struct page *base;
+    struct page_list *pages;
+};
+
 void pagemem_init();
-void *pagemem_pagedirectory_create(void *physaddr, unsigned int size);
+struct page_directory *pagemem_pagedirectory_create();
 int pagemem_pagedirectory0_add_page(void *virtaddr, void *physaddr);
+void pagemem_pagedirectory_add_page(struct page_directory *page_directory, void *virtaddr, void *physaddr);
+struct page_list *pagemem_pagedirectory_map(struct page_directory *page_directory, void *virtaddr, unsigned int size);
 void pagemem_pagedirectory_remove_page(void *virtaddr);
 void *pagemem_get_physaddr(void *virtaddr);
 
-#define release_page_frame(p_addr) \
-   mem_bitmap[((unsigned int) p_addr/PAGESIZE)/8] &= ~(1 << (((unsigned int) p_addr/PAGESIZE)%8));
-
 #define PG_PRESENT 0x0001
 #define PG_WRITE   0x0002
+#define PG_USER    0x0004
 #define PG_4MB     0x0080
 
 /*

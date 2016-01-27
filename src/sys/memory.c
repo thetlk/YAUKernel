@@ -95,13 +95,11 @@ void memory_init(struct multiboot_info *mbi)
 
 void __memory_set_page_heap_used(unsigned int page)
 {
-    video_printf("used : %d\n", page);
     page_heap_bitmap[page/8] |= (1 << (page%8));
 }
 
 void __memory_set_page_heap_unused(unsigned int page)
 {
-    video_printf("uunsed : %d\n", page);
     page_heap_bitmap[page/8] &= ~(1 << ((page%8)));
 }
 

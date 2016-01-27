@@ -31,7 +31,7 @@ void task1()
             : "m" (msg)
             :
         );
-        for(i=0; i<10000; i++);
+        for(i=0; i<10000000; i++);
     }
 }
 
@@ -69,11 +69,11 @@ void kmain_continue(struct multiboot_info *mbi)
     pagemem_init();
     kmalloc_init();
 
-    // task_load((void*) 0x100000, &task1, 0x1000); // segfault here
-    // task_load((void*) 0x200000, &task2, 0x1000);
+    task_load(&task1, 0x2000); // segfault here
+    task_load(&task2, 0x4000);
 
     video_print_color("Enable interrupts !\n", COLOR(WHITE, GREEN));
-    // sti(); // enable interrupts
+    sti(); // enable interrupts
 
     while(1);
 }

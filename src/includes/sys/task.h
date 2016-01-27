@@ -1,11 +1,15 @@
 #ifndef TASK_H
 #define TASK_H
 
-void task_load(void *physaddr, void *function, unsigned int size);
+#include <sys/pagemem.h>
+
+void task_load(void *function, unsigned int size);
 
 struct task
 {
     unsigned int pid;
+    struct page_directory *page_directory;
+    struct page_list *page_list;
 
     struct
     {
