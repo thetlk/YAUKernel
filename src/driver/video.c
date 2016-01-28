@@ -6,6 +6,12 @@
 int line = 0;
 int column = 0;
 
+void video_move_cursor();
+void video_line_clean(unsigned int tline);
+void video_copy_line(int d, int s);
+void scroll(unsigned int n);
+
+
 void video_move_cursor()
 {
     unsigned short c_pos = line * LINE_SIZE + column;

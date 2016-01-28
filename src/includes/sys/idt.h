@@ -19,6 +19,7 @@ struct idt_register
 } __attribute__((packed));
 
 void idt_init();
+void idt_set(unsigned char n, unsigned short seg, unsigned int offset, unsigned char flags);
 
 #define IDT_NUM 0xFF
 

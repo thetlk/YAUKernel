@@ -6,5 +6,6 @@
 
 void scheduler_add_task(struct task t);
 void schedule(struct pushed_registers *regs);
+void scheduler_switch_to_task(struct task *t);
 
 #endif

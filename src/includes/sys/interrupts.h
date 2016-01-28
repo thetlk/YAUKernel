@@ -33,6 +33,6 @@ void int_default(void);
 void int_clock(struct pushed_registers *regs);
 void int_keyboard(void);
 void int_pagefault(struct pushed_registers *regs);
-
+void int_generalprotection();
 
 #endif

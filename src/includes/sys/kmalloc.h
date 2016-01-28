@@ -10,5 +10,6 @@ struct kmalloc_chunk
 void kmalloc_init();
 void *kmalloc(unsigned int size);
 void kfree(void *addr);
+void *kmalloc_ksbrk(unsigned int n);
 
 #endif
