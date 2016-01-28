@@ -144,9 +144,9 @@ void video_putchar(char c)
     video_putchar_color(c, COLOR(WHITE, BLACK));
 }
 
-void video_print_color(char *str, char color)
+void video_print_color(const char *str, char color)
 {
-    char *current = str;
+    char *current = (char *) str;
 
     while(*current != '\0')
     {
@@ -155,12 +155,12 @@ void video_print_color(char *str, char color)
     }
 }
 
-void video_print(char *str)
+void video_print(const char *str)
 {
     video_print_color(str, COLOR(WHITE, BLACK));
 }
 
-void video_printf(char *s, ...)
+void video_printf(const char *s, ...)
 {
     va_list ap;
     char buffer[32];

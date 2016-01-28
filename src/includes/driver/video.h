@@ -26,12 +26,12 @@
                          video_print("]\n");
 
 void video_screen_clean();
-void video_print(char *s);
-void video_print_color(char *s, char color);
+void video_print(const char *s);
+void video_print_color(const char *s, char color);
 void video_putchar(char c);
 void video_putchar_color(char c, char color);
 void video_print_number(unsigned int number, unsigned int base);
 void video_print_number_color(unsigned int number, unsigned int base, char color);
-void video_printf(char *s, ...);
+void video_printf(const char *s, ...);
 
 #endif
