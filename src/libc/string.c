@@ -19,7 +19,7 @@ void *memset(void *s, int c, unsigned int n)
 
     while(n--)
     {
-        *tmp++ = c;
+        *tmp++ = (unsigned char) c;
     }
 
     return s;
@@ -38,7 +38,7 @@ unsigned int strlen(char *s)
     return ret;
 }
 
-int __itoa_recursive(char *buff, unsigned int n, unsigned int base)
+unsigned int __itoa_recursive(char *buff, unsigned int n, unsigned int base)
 {
     char chars[] = "0123456789abcdef";
     unsigned int deep = 0;

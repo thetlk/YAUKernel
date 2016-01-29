@@ -132,10 +132,10 @@ void keyboard_handle_code(unsigned char code)
                 break;
 
             default:
-                video_putchar(keyboard_map[code * 4 + (lshift_enable || rshift_enable)]);
+                video_putchar((char) (keyboard_map[code * 4 + (lshift_enable || rshift_enable)]));
         }
     } else {
-        code -= 0x80;
+        code = (unsigned char) (code - 0x80);
 
         switch(code)
         {

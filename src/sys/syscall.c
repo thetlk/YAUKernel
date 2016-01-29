@@ -14,20 +14,20 @@ unsigned int syscall_handle(unsigned int syscall_number,
     switch(syscall_number)
     {
         case SYS_WRITE:
-            ret = sys_write((unsigned char *) arg0, arg1);
+            ret = sys_write((char *) arg0, arg1);
             break;
 
         default:
             SYSCALL_DEBUG(syscall_number, arg0, arg1, arg2, arg3, arg4);
             video_print_color("unhandled syscall number\n", COLOR(RED, WHITE));
-            ret = -1;
+            ret = 0xFFFFFFFF;
             break;
     }
 
     return ret;
 }
 
-unsigned int sys_write(unsigned char *data, unsigned int size)
+unsigned int sys_write(char *data, unsigned int size)
 {
     unsigned int i;
 

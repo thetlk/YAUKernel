@@ -7,7 +7,7 @@ struct tss *tss_get()
     return &kernel_tss;
 }
 
-void tss_update(unsigned int ss0, unsigned int esp0)
+void tss_update(unsigned short ss0, unsigned int esp0)
 {
     kernel_tss.ss0 = ss0;
     kernel_tss.esp0 = esp0;

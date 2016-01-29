@@ -63,7 +63,7 @@ void pagemem_pagedirectory_remove_page(void *virtaddr)
     if(pagemem_get_physaddr(virtaddr)) // addr is mapped <=>
     {
         page_table_entry = PAGE_TABLE_ENTRY_FROM_VIRTADDR(virtaddr);
-        *page_table_entry = *page_table_entry & (~PG_PRESENT);
+        *page_table_entry = *page_table_entry & ((unsigned int) ~PG_PRESENT);
         invlpg(virtaddr);
     }
 }

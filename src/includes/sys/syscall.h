@@ -8,7 +8,7 @@ unsigned int syscall_handle(unsigned int syscall_number,
                     unsigned int arg3,
                     unsigned int arg4);
 
-unsigned int sys_write(unsigned char *data, unsigned int size);
+unsigned int sys_write(char *data, unsigned int size);
 
 #define SYS_WRITE 0x01
 

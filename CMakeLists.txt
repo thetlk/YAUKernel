@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 project(YAUKernel)
 
 # CFLAGS
-set(CMAKE_C_FLAGS "-Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Werror -m32 -O2 -nostdlib -nodefaultlibs -masm=intel")
+set(CMAKE_C_FLAGS "-Wall -Wextra -Wshadow -Wpointer-arith -Wcast-align -Wwrite-strings -Wmissing-declarations -Wredundant-decls -Wnested-externs -Winline -Wno-long-long -Wuninitialized -Wconversion -Werror -m32 -O2 -nostdlib -nodefaultlibs -masm=intel")
 set(CMAKE_EXE_LINKER_FLAGS "-T ${PROJECT_SOURCE_DIR}/linker.ld")
 # nasm support
 set(CMAKE_ASM_NASM_OBJECT_FORMAT elf32)

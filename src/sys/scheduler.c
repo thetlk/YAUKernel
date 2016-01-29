@@ -30,11 +30,11 @@ void scheduler_switch_to_task(struct task *t)
     {
         // inside kernel restore last stack
         kesp = t->regs.esp;
-        kss = t->regs.ss;
+        kss = (unsigned short) t->regs.ss;
     } else {
         // inside user task - take clean kernel stack
         kesp = t->kstack.esp0;
-        kss = t->kstack.ss0;
+        kss = (unsigned short) t->kstack.ss0;
     }
 
     asm volatile(

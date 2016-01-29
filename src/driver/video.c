@@ -7,21 +7,21 @@ int line = 0;
 int column = 0;
 
 void video_move_cursor();
-void video_line_clean(unsigned int tline);
+void video_line_clean(int tline);
 void video_copy_line(int d, int s);
-void scroll(unsigned int n);
+void scroll(int n);
 
 
 void video_move_cursor()
 {
-    unsigned short c_pos = line * LINE_SIZE + column;
+    unsigned short c_pos = (unsigned short) (line * LINE_SIZE + column);
     outb(0x3D4, 0x0F);
     outb(0x3D5, c_pos);
     outb(0x3D4, 0x0E);
     outb(0x3D5, c_pos >> 8);
 }
 
-void video_line_clean(unsigned int tline)
+void video_line_clean(int tline)
 {
     char *video = SCREEN(tline, 0);
     int i;
@@ -57,7 +57,7 @@ void video_screen_clean()
     column = 0;
 }
 
-void scroll(unsigned int n)
+void scroll(int n)
 {
     int source = n;
     int dest = 0;
@@ -175,7 +175,7 @@ void video_printf(const char *s, ...)
     char c;
     int int_val;
     unsigned int unsigned_int_val;
-    unsigned long long longlong_val;
+    long long longlong_val;
     int negative;
     unsigned int padding;
 
@@ -198,7 +198,7 @@ void video_printf(const char *s, ...)
 
             if(c >= '0' && c <= '9')
             {
-                padding = c - '0';
+                padding = (unsigned int) (c - '0');
                 c = *s++;
             }
 
@@ -207,10 +207,10 @@ void video_printf(const char *s, ...)
                 int_val = va_arg(ap, int);
                 if(int_val < 0)
                 {
-                    unsigned_int_val = -int_val;
+                    unsigned_int_val = (unsigned int) -int_val;
                     negative = 1;
                 } else {
-                    unsigned_int_val = int_val;
+                    unsigned_int_val = (unsigned int) int_val;
                 }
 
                 itoa(buffer, unsigned_int_val, 10);
@@ -230,7 +230,7 @@ void video_printf(const char *s, ...)
             }
             else if(c == 'u')
             {
-                unsigned_int_val = va_arg(ap, int);
+                unsigned_int_val = va_arg(ap, unsigned int);
                 itoa(buffer, unsigned_int_val, 10);
 
                 buffer_size = strlen(buffer);
@@ -244,7 +244,7 @@ void video_printf(const char *s, ...)
             }
             else if(c == 'x')
             {
-                unsigned_int_val = va_arg(ap, int);
+                unsigned_int_val = va_arg(ap, unsigned int);
                 itoa(buffer, unsigned_int_val, 16);
 
                 buffer_size = strlen(buffer);

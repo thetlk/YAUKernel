@@ -10,14 +10,14 @@ void idt_set(unsigned char n, unsigned short seg, unsigned int offset, unsigned 
 {
     idt_list[n].segment = seg;
     idt_list[n].offset_low = offset & 0xFFFF;
-    idt_list[n].offset_high = (offset >> 16) & 0xFFFF;
+    idt_list[n].offset_high = (unsigned short) ((offset >> 16) & 0xFFFF);
     idt_list[n].always0 = 0;
     idt_list[n].flags = flags;
 }
 
 void idt_init()
 {
-    int i;
+    unsigned char i;
 
     for(i=0; i<IDT_NUM; i++)
     {

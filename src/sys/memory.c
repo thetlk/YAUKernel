@@ -9,13 +9,12 @@ unsigned char page_heap_bitmap[KERNEL_PAGE_HEAP_NUM / 8];
 
 void memory_set_page_used(unsigned int page)
 {
-    mem_bitmap[page/8] |= (1 << (page%8));
+    mem_bitmap[page/8] = (unsigned char) (mem_bitmap[page/8] | (1 << (page%8)));
 }
 
 void memory_set_page_unused(unsigned int page)
 {
-    mem_bitmap[page/8] &= ~(1 << ((page%8)));
-    video_printf("page is now uunsed : %p\n", page);
+    mem_bitmap[page/8] = (unsigned char) (mem_bitmap[page/8] & ~(1 << ((page%8))));
 }
 
 void *memory_get_unused_page()
@@ -95,12 +94,12 @@ void memory_init(struct multiboot_info *mbi)
 
 void __memory_set_page_heap_used(unsigned int page)
 {
-    page_heap_bitmap[page/8] |= (1 << (page%8));
+    page_heap_bitmap[page/8] = (unsigned char) (page_heap_bitmap[page/8] | (1 << (page%8)));
 }
 
 void __memory_set_page_heap_unused(unsigned int page)
 {
-    page_heap_bitmap[page/8] &= ~(1 << ((page%8)));
+    page_heap_bitmap[page/8] = (unsigned char) (page_heap_bitmap[page/8] & ~(1 << ((page%8))));
 }
 
 void *__memory_get_page_heap_virtaddr()

@@ -3,8 +3,8 @@
 
 struct kmalloc_chunk
 {
-    unsigned int size : 31;
-    unsigned int used : 1;
+    unsigned int size;
+    unsigned char used;
 } __attribute__((packed));
 
 void kmalloc_init();

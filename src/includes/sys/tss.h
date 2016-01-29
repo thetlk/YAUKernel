@@ -44,6 +44,6 @@ struct tss
 } __attribute__((packed));
 
 struct tss *tss_get();
-void tss_update(unsigned int ss0, unsigned int esp0);
+void tss_update(unsigned short ss0, unsigned int esp0);
 
 #endif
