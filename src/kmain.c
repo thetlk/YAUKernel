@@ -10,8 +10,8 @@
 #include <driver/pic.h>
 #include <driver/video.h>
 
-void task1();
-void task2();
+void task1(void);
+void task2(void);
 void kmain_continue(struct multiboot_info *mbi);
 void kmain(unsigned long magic, struct multiboot_info *mbi);
 

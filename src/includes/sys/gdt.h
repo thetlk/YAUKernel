@@ -28,7 +28,7 @@ struct gdt_register
     unsigned int base;
 } __attribute__((packed));
 
-void gdt_init();
+void gdt_init(void);
 
 #define LIMIT_LOW(limit) (limit & 0xFFFF)
 #define LIMIT_HIGH(limit) ((limit >> 16) & 0xFF)

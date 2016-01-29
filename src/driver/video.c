@@ -6,7 +6,7 @@
 int line = 0;
 int column = 0;
 
-void video_move_cursor();
+void video_move_cursor(void);
 void video_line_clean(int tline);
 void video_copy_line(int d, int s);
 void scroll(int n);

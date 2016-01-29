@@ -1,7 +1,7 @@
 #ifndef PIC_H
 #define PIC_H
 
-void pic_init();
+void pic_init(void);
 void pic_send_eoi(unsigned char irq);
 
 #define MASTER_IDT_OFFSET 0x20

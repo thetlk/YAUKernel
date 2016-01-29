@@ -60,12 +60,12 @@ struct page
 
 void memory_set_page_used(unsigned int page);
 void memory_set_page_unused(unsigned int page);
-void *memory_get_unused_page();
+void *memory_get_unused_page(void);
 void memory_init(struct multiboot_info *mbi);
-struct page *memory_get_page_heap();
+struct page *memory_get_page_heap(void);
 int memory_release_page_heap(void *virtaddr);
 void __memory_set_page_heap_used(unsigned int page);
 void __memory_set_page_heap_unused(unsigned int page);
-void *__memory_get_page_heap_virtaddr();
+void *__memory_get_page_heap_virtaddr(void);
 
 #endif

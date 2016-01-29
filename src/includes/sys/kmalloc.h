@@ -7,7 +7,7 @@ struct kmalloc_chunk
     unsigned char used;
 } __attribute__((packed));
 
-void kmalloc_init();
+void kmalloc_init(void);
 void *kmalloc(unsigned int size);
 void kfree(void *addr);
 void *kmalloc_ksbrk(unsigned int n);

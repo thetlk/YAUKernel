@@ -25,7 +25,7 @@
                          video_print_color("OK", COLOR(GREEN, BLACK));  \
                          video_print("]\n");
 
-void video_screen_clean();
+void video_screen_clean(void);
 void video_print(const char *s);
 void video_print_color(const char *s, char color);
 void video_putchar(char c);

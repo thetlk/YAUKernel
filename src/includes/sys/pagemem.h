@@ -16,8 +16,8 @@ struct page_directory
     struct page_list *pages;
 };
 
-void pagemem_init();
-struct page_directory *pagemem_pagedirectory_create();
+void pagemem_init(void);
+struct page_directory *pagemem_pagedirectory_create(void);
 int pagemem_pagedirectory0_add_page(void *virtaddr, void *physaddr);
 void pagemem_pagedirectory_add_page(struct page_directory *page_directory, void *virtaddr, void *physaddr);
 struct page_list *pagemem_pagedirectory_map(struct page_directory *page_directory, void *virtaddr, unsigned int size);
