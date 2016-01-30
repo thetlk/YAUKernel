@@ -2,6 +2,7 @@
 #define MEMORY_H
 
 #include <boot/multiboot.h>
+#include <libc/list.h>
 
 /*
 Virtual memory organization :
@@ -56,7 +57,10 @@ struct page
 {
     void *virtaddr;
     void *physaddr;
+    LIST_ENTRY(page) next_page;
 };
+
+LIST_HEAD(page_list, page);
 
 void memory_set_page_used(unsigned int page);
 void memory_set_page_unused(unsigned int page);

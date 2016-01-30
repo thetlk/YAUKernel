@@ -3,6 +3,7 @@
 #include <sys/memory.h>
 #include <sys/kmalloc.h>
 #include <libc/string.h>
+#include <libc/list.h>
 #include <boot/multiboot.h>
 #include <driver/video.h>
 
@@ -93,7 +94,7 @@ struct page_directory * pagemem_pagedirectory_create()
     // page directory miroring
     page_directory_addr[1023] = ((unsigned int) page_directory->base->physaddr) | PG_PRESENT | PG_WRITE;
 
-    page_directory->pages = 0;
+    LIST_INIT(&(page_directory->pages));
 
     return page_directory;
 }
@@ -105,7 +106,6 @@ void pagemem_pagedirectory_add_page(struct page_directory *page_directory, void 
     unsigned int *page_table;
     unsigned int i;
     struct page *new_page;
-    struct page_list *new_elem;
 
     page_directory_entry = PAGE_DIRECTORY_ENTRY_FROM_VIRTADDR(virtaddr);
 
@@ -122,21 +122,7 @@ void pagemem_pagedirectory_add_page(struct page_directory *page_directory, void 
 
         *page_directory_entry = ((unsigned int) new_page->physaddr) | PG_PRESENT | PG_WRITE | PG_USER;
 
-        if(page_directory->pages == 0) // first entry
-        {
-            new_elem = kmalloc(sizeof(struct page_list));
-            new_elem->page = new_page;
-            new_elem->next = 0;
-            new_elem->prev = 0;
-            page_directory->pages = new_elem;
-        } else {
-            new_elem = kmalloc(sizeof(struct page_list));
-            new_elem->page = new_page;
-            new_elem->next = page_directory->pages;
-            new_elem->prev = 0;
-            page_directory->pages->prev = new_elem;
-            page_directory->pages = new_elem;
-        }
+        LIST_INSERT_HEAD(&(page_directory->pages), new_page, next_page);
 
     }
 
@@ -148,29 +134,22 @@ void pagemem_pagedirectory_add_page(struct page_directory *page_directory, void 
 struct page_list *pagemem_pagedirectory_map(struct page_directory *page_directory, void *virtaddr, unsigned int size)
 {
     struct page_list *page_list;
+    struct page *new_page;
     void *physaddr;
     unsigned int i;
 
     page_list = kmalloc(sizeof(struct page_list));
-    page_list->page = 0;
-    page_list->next = 0;
-    page_list->prev = 0;
+    LIST_INIT(page_list);
 
     for(i=((unsigned int) virtaddr); i < ((unsigned int) virtaddr) + size; i += PAGE_SIZE)
     {
         physaddr = memory_get_unused_page();
         pagemem_pagedirectory_add_page(page_directory, (void*) i, physaddr);
 
-        page_list->page = kmalloc(sizeof(struct page));
-        page_list->page->virtaddr = (void*) i;
-        page_list->page->physaddr = physaddr;
-
-        page_list->next = kmalloc(sizeof(struct page_list));
-        page_list->next->page = 0;
-        page_list->next->next = 0;
-        page_list->next->prev = page_list;
-
-        page_list = page_list->next;
+        new_page = kmalloc(sizeof(struct page));
+        new_page->virtaddr = (void*) i;
+        new_page->physaddr = physaddr;
+        LIST_INSERT_HEAD(page_list, new_page, next_page);
     }
 
     return page_list;

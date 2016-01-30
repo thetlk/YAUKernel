@@ -2,18 +2,12 @@
 #define PAGEMEM_H
 
 #include <boot/multiboot.h>
-
-struct page_list
-{
-    struct page *page;
-    struct page_list *next;
-    struct page_list *prev;
-};
+#include <sys/memory.h>
 
 struct page_directory
 {
     struct page *base;
-    struct page_list *pages;
+    struct page_list pages;
 };
 
 void pagemem_init(void);
