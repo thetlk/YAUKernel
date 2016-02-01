@@ -85,9 +85,13 @@ void *kmalloc(unsigned int size)
 
     }
 
-    split = (struct kmalloc_chunk *) ((char *) chunk + alloc_size);
-    split->size = chunk->size - alloc_size;
-    split->used = 0;
+    // only split chunk when chunk->size != alloc_size
+    if(chunk->size != alloc_size)
+    {
+        split = (struct kmalloc_chunk *) ((char *) chunk + alloc_size);
+        split->size = chunk->size - alloc_size;
+        split->used = 0;
+    }
 
     chunk->size = alloc_size;
     chunk->used = 1;
