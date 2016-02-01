@@ -3,6 +3,7 @@
 #include <sys/scheduler.h>
 #include <sys/memory.h>
 #include <sys/asm.h>
+#include <sys/kmalloc.h>
 #include <libc/string.h>
 #include <driver/video.h>
 
@@ -10,6 +11,7 @@ void task_load(void *function, unsigned int size)
 {
     struct page_directory *page_directory;
     struct page_list *page_list;
+    struct page_list *tmp;
     struct page *kernel_stack;
     struct task t;
 
@@ -21,7 +23,9 @@ void task_load(void *function, unsigned int size)
     memcpy((void*) USER_SPACE_BASE_ADDR, function, size);
 
     // create user stack
-    pagemem_pagedirectory_map(page_directory, (void *) USER_SPACE_STACK_ADDR, USER_SPACE_STACK_SIZE);
+    tmp = pagemem_pagedirectory_map(page_directory, (void *) USER_SPACE_STACK_ADDR, USER_SPACE_STACK_SIZE);
+    LIST_CONCAT(page_list, tmp, next_page);
+    kfree(tmp);
 
     // create kernel stack
     kernel_stack = memory_get_page_heap();
