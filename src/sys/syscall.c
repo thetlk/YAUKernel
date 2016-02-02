@@ -1,5 +1,6 @@
 #include <sys/syscall.h>
 #include <sys/asm.h>
+#include <sys/types.h>
 #include <driver/video.h>
 
 syscall_handler_func_t syscall_handler_table[SYSCALL_MAX];
@@ -22,7 +23,7 @@ void syscall_init()
 
     for(i=0; i<SYSCALL_MAX; i++)
     {
-        syscall_set_handler(i, 0);
+        syscall_set_handler(i, NULL);
     }
 
     syscall_set_handler(SYS_WRITE, (syscall_handler_func_t) sys_write);
@@ -38,7 +39,7 @@ int syscall_handle(unsigned int syscall_number,
     int ret = 0;
 
     // video_printf("syscall_handler_table[syscall_number] = %p\n", syscall_handler_table[syscall_number]);
-    if(syscall_number < SYSCALL_MAX && syscall_handler_table[syscall_number] != 0)
+    if(syscall_number < SYSCALL_MAX && syscall_handler_table[syscall_number] != NULL)
     {
         ret = syscall_handler_table[syscall_number](arg0, arg1, arg2, arg3, arg4);
     } else {

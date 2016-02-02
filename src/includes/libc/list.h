@@ -1,6 +1,8 @@
 #ifndef LIST_H
 #define LIST_H
 
+#include <sys/types.h>
+
 /*
     struct page *p1 = NULL;
     struct page *p2 = NULL;
@@ -45,7 +47,7 @@
         struct type *last;              \
     }
 
-#define LIST_HEAD_INITIALIZER(head) { 0, 0 }
+#define LIST_HEAD_INITIALIZER(head) { NULL, NULL }
 
 #define LIST_ENTRY(type)    \
     struct                  \
@@ -54,13 +56,13 @@
     }
 
 // Functions
-#define LIST_EMPTY(head) ((head)->first == 0)
+#define LIST_EMPTY(head) ((head)->first == NULL)
 #define LIST_FIRST(head) ((head)->first)
 #define LIST_LAST(head) ((head)->last)
 
-#define LIST_INIT(head)     \
-    LIST_FIRST((head)) = 0; \
-    LIST_LAST((head)) = 0
+#define LIST_INIT(head)         \
+    LIST_FIRST((head)) = NULL;  \
+    LIST_LAST((head)) = NULL
 
 #define LIST_NEXT(element, field) (element->field.next)
 
@@ -82,33 +84,33 @@
         (var);                                          \
         (var) = LIST_NEXT((var), field))
 
-#define LIST_INSERT_HEAD(head, element, field)                  \
-    if((LIST_NEXT((element), field) = LIST_FIRST((head))) == 0) \
-    {                                                           \
-        LIST_LAST((head)) = (element);                          \
-    }                                                           \
+#define LIST_INSERT_HEAD(head, element, field)                      \
+    if((LIST_NEXT((element), field) = LIST_FIRST((head))) == NULL)  \
+    {                                                               \
+        LIST_LAST((head)) = (element);                              \
+    }                                                               \
     LIST_FIRST((head)) = (element)
 
-#define LIST_INSERT_AFTER(head, helement, element, field)                   \
-    if((LIST_NEXT((element), field) = LIST_NEXT((helement), field)) == 0)   \
-    {                                                                       \
-        LIST_LAST((head)) = (element);                                      \
-    }                                                                       \
+#define LIST_INSERT_AFTER(head, helement, element, field)                       \
+    if((LIST_NEXT((element), field) = LIST_NEXT((helement), field)) == NULL)    \
+    {                                                                           \
+        LIST_LAST((head)) = (element);                                          \
+    }                                                                           \
     LIST_NEXT((helement), field) = (element)
 
-#define LIST_INSERT_TAIL(head, element, field)          \
-    LIST_NEXT((element), field) = 0;                    \
-    LIST_NEXT((LIST_LAST((head))), field) = element;    \
+#define LIST_INSERT_TAIL(head, element, field)              \
+    LIST_NEXT((element), field) = NULL;                     \
+    LIST_NEXT((LIST_LAST((head))), field) = element;        \
     LIST_LAST((head)) = element
 
-#define LIST_REMOVE_HEAD(head, field)                                                           \
-    if(!LIST_EMPTY((head)) && (LIST_FIRST((head)) = LIST_NEXT(LIST_FIRST((head)), field)) == 0) \
-    {                                                                                           \
-        LIST_LAST((head)) = 0;                                                                  \
+#define LIST_REMOVE_HEAD(head, field)                                                               \
+    if(!LIST_EMPTY((head)) && (LIST_FIRST((head)) = LIST_NEXT(LIST_FIRST((head)), field)) == NULL)  \
+    {                                                                                               \
+        LIST_LAST((head)) = NULL;                                                                   \
     }
 
-#define LIST_REMOVE_AFTER(head, element, field)                                       \
-    if((LIST_NEXT((element), field) = LIST_NEXT(LIST_NEXT((element), field), field)) == 0) \
+#define LIST_REMOVE_AFTER(head, element, field)                                                 \
+    if((LIST_NEXT((element), field) = LIST_NEXT(LIST_NEXT((element), field), field)) == NULL)   \
     {\
         LIST_LAST((head)) = element; \
     }
