@@ -1,6 +1,7 @@
 #include <sys/gdt.h>
 #include <sys/tss.h>
 #include <sys/asm.h>
+#include <sys/memory.h>
 #include <driver/video.h>
 
 static struct gdt_entry kernel_gdt[] = {
@@ -126,7 +127,7 @@ void gdt_init()
 {
 
     // init kernel tss
-    tss_update(0x18, 0x20000);
+    tss_update(SEGMENT_KERNEL_STACK, 0x20000);
 
     // init kernel tss entry in gdt (base only)
     kernel_gdt[7].base_low = BASE_LOW((unsigned int) tss_get());
@@ -139,11 +140,11 @@ void gdt_init()
 
     // load gdt register
     video_print("Init GDT ... ");
-    lgdt(kernel_gdt_register, 0x10); // data at entry 0x10
+    lgdt(kernel_gdt_register, SEGMENT_KERNEL_DATA); // data at entry 0x10
     video_print_ok();
 
     video_print("Load TSS ... ");
-    ltr(0x38); // TSS at 0x38 gdt entry
+    ltr(SEGMENT_TSS_ENTRY); // TSS at 0x38 gdt entry
     video_print_ok();
 
 }

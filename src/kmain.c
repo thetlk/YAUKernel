@@ -99,7 +99,7 @@ void kmain(unsigned long magic, struct multiboot_info *mbi)
     multiboot_display(mbi);
     
     gdt_init();
-    set_ss_esp();
+    set_ss_esp(SEGMENT_KERNEL_STACK);
 
     kmain_continue(mbi);
 }

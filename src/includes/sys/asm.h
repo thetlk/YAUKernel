@@ -78,11 +78,13 @@ asm ( assembler template
             :                \
         );
 
-#define set_ss_esp()                   \
-    asm volatile("mov %%eax, 0x18   ;" \
-                "movw %%ss, %%ax    ;" \
-                "mov %%esp, 0x20000 ;" \
-         ::: );
+#define set_ss_esp(ss)                  \
+    asm volatile("movw %%ss, %%ax   ;"  \
+                "mov %%esp, 0x20000 ;"  \
+         :                              \
+         : "a" (ss)                     \
+         :                              \
+         );
 
 #define mov_cr3(val)                \
     asm volatile("mov %%cr3, %%eax" \

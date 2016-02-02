@@ -31,17 +31,17 @@ struct task *task_load(void *function, unsigned int size)
     kernel_stack = memory_get_page_heap();
 
     t = kmalloc(sizeof(struct task));
-    t->kstack.ss0 = 0x18;
+    t->kstack.ss0 = SEGMENT_KERNEL_STACK;
     t->kstack.esp0 = (unsigned int) kernel_stack->virtaddr + PAGE_SIZE - 16;
-    t->regs.ss = 0x33;
+    t->regs.ss = SEGMENT_USER_STACK | 3;
     t->regs.esp = USER_SPACE_STACK_ADDR + USER_SPACE_STACK_SIZE - 16;
     t->regs.eflags = 0x0;
-    t->regs.cs = 0x23;
+    t->regs.cs = SEGMENT_USER_CODE | 3;
     t->regs.eip = USER_SPACE_BASE_ADDR;
-    t->regs.ds = 0x2B;
-    t->regs.fs = 0x2B;
-    t->regs.es = 0x2B;
-    t->regs.gs = 0x2B;
+    t->regs.ds = SEGMENT_USER_DATA | 3;
+    t->regs.fs = SEGMENT_USER_DATA | 3;
+    t->regs.es = SEGMENT_USER_DATA | 3;
+    t->regs.gs = SEGMENT_USER_DATA | 3;
     t->regs.cr3 = (unsigned int) page_directory->base->physaddr;
     t->regs.eax = 0;
     t->regs.ebx = 0;

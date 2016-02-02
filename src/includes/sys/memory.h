@@ -31,6 +31,15 @@ Physical memory organization :
 
 */
 
+// segments values
+#define SEGMENT_KERNEL_CODE     0x08
+#define SEGMENT_KERNEL_DATA     0x10
+#define SEGMENT_KERNEL_STACK    0x18
+#define SEGMENT_USER_CODE       0x20
+#define SEGMENT_USER_DATA       0x28
+#define SEGMENT_USER_STACK      0x30
+#define SEGMENT_TSS_ENTRY       0x38
+
 #define KERNEL_MAX_ADDR             0x800000 // 8Mo
 #define KERNEL_PAGE_DIRECTORY_ADDR  0x1000
 #define KERNEL_PAGE_TABLE_ADDR      0x400000

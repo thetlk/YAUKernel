@@ -2,6 +2,7 @@
 #include <sys/interrupts.h>
 #include <sys/task.h>
 #include <sys/tss.h>
+#include <sys/memory.h>
 #include <driver/video.h>
 
 struct task *task_list[32];
@@ -26,7 +27,7 @@ void scheduler_switch_to_task(struct task *t)
     t->regs.eflags |= 0x200; // set IF flag
     t->regs.eflags &= 0xFFFFBFFF; // removes NT flag
 
-    if(t->regs.cs == 0x08)
+    if(t->regs.cs == SEGMENT_KERNEL_CODE)
     {
         // inside kernel restore last stack
         kesp = t->regs.esp;
@@ -170,7 +171,7 @@ void schedule(struct pushed_registers *regs)
         current_task->regs.eflags = regs->eflags;
 
         // task interrupted inside kernel code
-        if(current_task->regs.cs == 0x08)
+        if(current_task->regs.cs == SEGMENT_KERNEL_CODE)
         {
             current_task->regs.ss = ktss->ss0;
             current_task->regs.esp = regs->esp_kernel + 3*4; // ebx, edx, ecx, eax
