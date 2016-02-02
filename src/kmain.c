@@ -76,8 +76,8 @@ void kmain_continue(struct multiboot_info *mbi)
 
     syscall_init();
 
-    task_load(&task1, 0x2000); // segfault here
-    task_load(&task2, 0x4000);
+    task_load_and_schedule(&task1, 0x2000);
+    task_load_and_schedule(&task2, 0x4000);
 
     video_print_color("Enable interrupts !\n", COLOR(WHITE, GREEN));
     sti(); // enable interrupts

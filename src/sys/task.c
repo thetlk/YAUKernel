@@ -7,7 +7,7 @@
 #include <libc/string.h>
 #include <driver/video.h>
 
-void task_load(void *function, unsigned int size)
+struct task *task_load(void *function, unsigned int size)
 {
     struct page_directory *page_directory;
     struct page_list *page_list;
@@ -54,5 +54,13 @@ void task_load(void *function, unsigned int size)
     t->page_directory = page_directory;
     t->page_list = page_list;
 
+    return t;
+}
+
+void task_load_and_schedule(void *function, unsigned int size)
+{
+    struct task *t;
+
+    t = task_load(function, size);
     scheduler_add_task(t);
 }

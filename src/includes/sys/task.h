@@ -3,8 +3,6 @@
 
 #include <sys/pagemem.h>
 
-void task_load(void *function, unsigned int size);
-
 struct task
 {
     unsigned int pid;
@@ -39,5 +37,8 @@ struct task
     } kstack __attribute__((packed));
 
 } __attribute__((packed));
+
+struct task *task_load(void *function, unsigned int size);
+void task_load_and_schedule(void *function, unsigned int size);
 
 #endif
