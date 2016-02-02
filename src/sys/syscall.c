@@ -2,9 +2,9 @@
 #include <sys/asm.h>
 #include <driver/video.h>
 
-syscall_handler_func syscall_handler_table[SYSCALL_MAX];
+syscall_handler_func_t syscall_handler_table[SYSCALL_MAX];
 
-int syscall_set_handler(unsigned int number, syscall_handler_func func)
+int syscall_set_handler(unsigned int number, syscall_handler_func_t func)
 {
     int ret = -1;
 
@@ -25,7 +25,7 @@ void syscall_init()
         syscall_set_handler(i, 0);
     }
 
-    syscall_set_handler(SYS_WRITE, (syscall_handler_func) sys_write);
+    syscall_set_handler(SYS_WRITE, (syscall_handler_func_t) sys_write);
 }
 
 int syscall_handle(unsigned int syscall_number,

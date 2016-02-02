@@ -1,10 +1,10 @@
 #ifndef SYSCALL_H
 #define SYSCALL_H
 
-typedef int (*syscall_handler_func)(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int);
+typedef int (*syscall_handler_func_t)(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int);
 
 void syscall_init(void);
-int syscall_set_handler(unsigned int number, syscall_handler_func func);
+int syscall_set_handler(unsigned int number, syscall_handler_func_t func);
 int syscall_handle(unsigned int syscall_number,
                     unsigned int arg0,
                     unsigned int arg1,
