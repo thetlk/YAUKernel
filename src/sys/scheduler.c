@@ -4,14 +4,14 @@
 #include <sys/tss.h>
 #include <driver/video.h>
 
-struct task task_list[32];
+struct task *task_list[32];
 struct task *current_task = 0;
 unsigned int n_task = 0;
 
-void scheduler_add_task(struct task t)
+void scheduler_add_task(struct task *t)
 {
     task_list[n_task] = t;
-    task_list[n_task].pid = n_task;
+    task_list[n_task]->pid = n_task;
     n_task++;
 }
 
@@ -148,7 +148,7 @@ void schedule(struct pushed_registers *regs)
 
     if(current_task == 0 && n_task >= 1)
     {
-        current_task = &task_list[0];
+        current_task = task_list[0];
     }
     else if(n_task > 1)
     {
@@ -184,7 +184,7 @@ void schedule(struct pushed_registers *regs)
         current_task->kstack.esp0 = ktss->esp0;
 
         // simple roundrobin - just takes next task
-        current_task = &task_list[(current_task->pid + 1)%n_task];
+        current_task = task_list[(current_task->pid + 1)%n_task];
     } else {
         return; // do nothing - current_task != 0 && ntask == 1
     }
