@@ -74,6 +74,8 @@ void kmain_continue(struct multiboot_info *mbi)
     pagemem_init();
     kmalloc_init();
 
+    syscall_init();
+
     task_load(&task1, 0x2000); // segfault here
     task_load(&task2, 0x4000);
 
