@@ -25,3 +25,8 @@ add_custom_target(
     DEPENDS kernel
 )
 
+# in order to create the disk image
+add_custom_target(
+	disk
+	COMMAND bximage -q -mode=create -hd=10M ${CMAKE_BINARY_DIR}/disk.img
+)
