@@ -9,6 +9,8 @@
 #include <sys/kmalloc.h>
 #include <driver/pic.h>
 #include <driver/video.h>
+#include <driver/ide.h>
+#include <libc/string.h>
 
 void task1(void);
 void task2(void);
@@ -67,6 +69,8 @@ void task2()
 
 void kmain_continue(struct multiboot_info *mbi)
 {
+    char *buf;
+    char const *msg = "Bonjourrrrrrr\n";
     idt_init();
     pic_init();
 
@@ -78,6 +82,11 @@ void kmain_continue(struct multiboot_info *mbi)
 
     task_load_and_schedule(&task1, 0x2000);
     task_load_and_schedule(&task2, 0x4000);
+
+    // disk test
+    buf = kmalloc(512);
+    memcpy(buf, msg, strlen((char *)msg) + 1);
+    ide_write(0, 2, 1, buf);
 
     video_print_color("Enable interrupts !\n", COLOR(WHITE, GREEN));
     sti(); // enable interrupts
