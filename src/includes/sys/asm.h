@@ -29,6 +29,13 @@ asm ( assembler template
             :                         \
             );
 
+#define outw(port, value)             \
+    asm volatile ("outw %%dx, %%ax"   \
+            :                         \
+            : "d" (port), "a" (value) \
+            :                         \
+      );
+
 #define inb(port)                  \
 ({                                 \
     unsigned char _ret;            \
@@ -40,6 +47,16 @@ asm ( assembler template
     _ret;                          \
 })
 
+#define inw(port)                   \
+({                                  \
+    unsigned short _ret;            \
+    asm volatile ("inw %%ax, %%dx"  \
+            : "=a" (_ret)           \
+            : "d" (port)            \
+            :                       \
+      );                            \
+    _ret;                           \
+})
 
 #define io_wait()               \
     asm volatile ("jmp 1f    ;" \
